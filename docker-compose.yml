@@ -1,10 +1,8 @@
 version: '3.8'
 
-volumes:
-  mariadb-volume:
-
 services:
   app:
+    container_name: app-container
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
@@ -19,6 +17,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
 
   web:
+    container_name: web-container
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
@@ -30,16 +29,15 @@ services:
       - ./src/:/var/www/html
 
   db:
+    container_name: db-container
     build:
       context: .
-      dockerfile: ./docker/mariadb/Dockerfile
+      dockerfile: ./docker/mysql/Dockerfile
     ports:
       - ${DB_PORT}:3306
     environment:
-      MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       TZ: 'Asia/Tokyo'
-    volumes:
-      - mariadb-volume:/var/lib/mysql
