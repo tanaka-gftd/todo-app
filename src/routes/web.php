@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 //SPA対応のため、ルーティング先は全てwelcome.blade.phpテンプレートへ
-Route::get('{any}', function () {
+/* Route::get('{any}', function () {
     return view('welcome');
-})->where('any','.*');
+})->where('any','.*'); */

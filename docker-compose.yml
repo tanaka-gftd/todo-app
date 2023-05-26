@@ -1,13 +1,24 @@
 version: '3.8'
 
 services:
+
+  #Laravelプロジェクト用コンテナ
   app:
+
+    #分かりやすいよう、コンテナに名前をつけておく
     container_name: app-container
+
+    #build時のワーキングディレクトリとDockerfileのある場所を指定
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
+
+    #ホストOS内のディレクトリとコンテナ内のディレクトリを同期
+    #ホストOSのパス:コンテナ内のパス
     volumes:
       - ./src/:/var/www/html
+
+    #コンテナに渡す環境変数(同階層の.envに記載)
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
@@ -16,28 +27,60 @@ services:
       - DB_USERNAME=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
 
+
+  #nginxコンテナ
   web:
     container_name: web-container
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+
+    #ホストとコンテナの通信に使用するポート
+    #ホスト側のポート番号:コンテナ側のポート番号
+    #コンテナ側のポート番号は同階層の.envに記載
+    #以下の記述だと、localhost:8000でコンテナにアクセスできるようになる
     ports:
-      - ${WEB_PORT}:80
+      - 8000:${WEB_PORT}
     depends_on:
       - app
     volumes:
-      - ./src/:/var/www/html
+      - ./src:/usr/share/nginx/html
 
+
+  #mysqlのコンテナ
   db:
     container_name: db-container
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
+
+    #mysqlで使用するポート番号の設定
+    #ホスト側:コンテナ側
     ports:
-      - ${DB_PORT}:3306
+      - 3306:${DB_PORT}
     environment:
       MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       TZ: 'Asia/Tokyo'
+
+    #永続化のため、データベースのデータを同期
+    volumes:
+      - db-volume:/var/lib/mysql
+    
+  
+  #phpmyadmin...データベースをwebブラウザで管理&編集できるようにする、データベース接続用クライアントツール
+  phpmyadmin:
+    container_name: phpmyadmin-container
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+
+#データベースのデータを永続化
+volumes:
+  db-volume:
