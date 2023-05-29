@@ -13,6 +13,10 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
 
+    #viteによる開発用
+    ports:
+      - "5173:5173" 
+
     #ホストOS内のディレクトリとコンテナ内のディレクトリを同期
     #ホストOSのパス:コンテナ内のパス
     volumes:
