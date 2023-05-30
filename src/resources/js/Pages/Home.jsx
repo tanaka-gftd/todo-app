@@ -1,13 +1,15 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-function App() {
+import { Link } from 'react-router-dom';
+
+const Home = () => {
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">Home Component</div>
-                        <div className="card-body">I'm an home component!</div>
+                        <div className="card-header">ホームコンポネント</div>
+                        <div className="card-body">これは遷移確認用ホームコンポーネントです</div>
+                        <Link to={'/page'} className='btn btn-primary'>Pageへ遷移</Link>
                     </div>
                 </div>
             </div>
@@ -15,6 +17,4 @@ function App() {
     );
 }
 
-const container = document.getElementById('app');
-const root = createRoot(container);
-root.render(<App />);
+export default Home;
