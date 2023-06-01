@@ -22,16 +22,16 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
+                <h2 className="text-lg font-medium text-gray-900">アカウント情報を編集する</h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    アカウントのプロフィール情報、メールアドレスを更新する。
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="氏名" />
 
                     <TextInput
                         id="name"
@@ -47,7 +47,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="メールアドレス" />
 
                     <TextInput
                         id="email"
@@ -85,7 +85,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>保存</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -93,7 +93,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         leaveTo="opacity-0"
                         className="transition ease-in-out"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-gray-600">保存しました。</p>
                     </Transition>
                 </div>
             </form>

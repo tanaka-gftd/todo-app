@@ -24,8 +24,11 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password
-                reset link that will allow you to choose a new one.
+                パスワードの再設定
+            </div>
+
+            <div>
+                メールアドレス
             </div>
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
@@ -39,13 +42,14 @@ export default function ForgotPassword({ status }) {
                     className="mt-1 block w-full"
                     isFocused={true}
                     onChange={onHandleChange}
+                    placeholder="テキストを追加"
                 />
 
                 <InputError message={errors.email} className="mt-2" />
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        Email Password Reset Link
+                        パスワード再設定リンクを送信
                     </PrimaryButton>
                 </div>
             </form>

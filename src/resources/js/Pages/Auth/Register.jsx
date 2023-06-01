@@ -32,11 +32,15 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="ユーザ登録" />
+
+            <div>
+                ユーザ登録
+            </div>
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="氏名" />
 
                     <TextInput
                         id="name"
@@ -47,13 +51,14 @@ export default function Register() {
                         isFocused={true}
                         onChange={handleOnChange}
                         required
+                        placeholder="Add text"
                     />
 
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="メールアドレス" />
 
                     <TextInput
                         id="email"
@@ -64,13 +69,14 @@ export default function Register() {
                         autoComplete="username"
                         onChange={handleOnChange}
                         required
+                        placeholder="Add text"
                     />
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="パスワード" />
 
                     <TextInput
                         id="password"
@@ -81,13 +87,14 @@ export default function Register() {
                         autoComplete="new-password"
                         onChange={handleOnChange}
                         required
+                        placeholder="Add text"
                     />
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel htmlFor="password_confirmation" value="パスワードを再入力" />
 
                     <TextInput
                         id="password_confirmation"
@@ -98,21 +105,15 @@ export default function Register() {
                         autoComplete="new-password"
                         onChange={handleOnChange}
                         required
+                        placeholder="Add text"
                     />
 
                     <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href={route('login')}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Already registered?
-                    </Link>
-
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        Register
+                        登録
                     </PrimaryButton>
                 </div>
             </form>
