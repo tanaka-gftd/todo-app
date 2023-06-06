@@ -4,6 +4,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton'
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -36,74 +37,72 @@ export default function Login({ status, canResetPassword }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
-            <div>
-                ログイン
-            </div>
+            <div className='mx-5'>
+                <div className="text-4xl mt-8 mb-10">
+                    ログイン
+                </div>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="メールアドレス" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={handleOnChange}
-                        placeholder="テキストを追加"
-                    />
-
+                <form onSubmit={submit}>
+                    <div className='flex justify-between items-center'>
+                        <InputLabel className='text-xl' htmlFor="email" value="メールアドレス" />
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            className="block w-96 text-xl"
+                            autoComplete="username"
+                            isFocused={true}
+                            onChange={handleOnChange}
+                            placeholder="テキストを追加"
+                        />
+                    </div>
                     <InputError message={errors.email} className="mt-2" />
-                </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="パスワード" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={handleOnChange}
-                        placeholder="テキストを追加"
-                    />
-
+                    <div className="flex justify-between mt-10 items-center">
+                        <InputLabel className='text-xl' htmlFor="password" value="パスワード" />
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            className="block w-96 text-xl"
+                            autoComplete="current-password"
+                            onChange={handleOnChange}
+                            placeholder="テキストを追加"
+                        />
+                    </div>
                     <InputError message={errors.password} className="mt-2" />
-                </div>
 
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox name="remember" value={data.remember} onChange={handleOnChange} />
-                        <span className="ml-2 text-sm text-gray-600">ログインしたままにする</span>
-                    </label>
-                </div>
+                    <div className="block mt-10">
+                        <div className="flex items-center">
+                            <Checkbox  className="flex items-center focus:ring-transparent" name="remember" value={data.remember} onChange={handleOnChange} />
+                            <span className="ml-2 text-lg text-gray-600">ログインしたままにする</span>
+                        </div>
+                    </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            パスワードをお忘れの場合
-                        </Link>
-                    )}
+                    <div className="flex items-end justify-end my-5">
+                        {canResetPassword && (
+                            <Link
+                                href={route('password.request')}
+                                className="underline underline-offset-8 decoration-blue-400 text-xl text-blue-700 hover:text-gray-700 hover:decoration-gray-400"
+                            >
+                                パスワードをお忘れの場合
+                            </Link>
+                        )}
 
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        ログイン
-                    </PrimaryButton>
+                        <PrimaryButton className="ml-10 w-48" disabled={processing}>
+                            <span className='text-lg m-auto leading-10'>ログイン</span>
+                        </PrimaryButton>
+                    </div>
 
-                    <PrimaryButton className="ml-4">
-                        <Link href={route('register')}>
-                                ユーザ登録する
-                        </Link>
-                    </PrimaryButton>
-                </div>
-            </form>
+                    <SecondaryButton className="my-10 px-0 py-0 w-full border-solid border-2 border-blue-400">
+                            <Link className='text-lg leading-10 p-2 w-full text-blue-700' href={route('register')}>
+                                    <span className=''>ユーザ登録する</span>
+                            </Link>
+                    </SecondaryButton>
+                </form>
+            </div>
         </GuestLayout>
     );
 }
