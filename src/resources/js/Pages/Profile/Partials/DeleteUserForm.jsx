@@ -59,42 +59,45 @@ export default function DeleteUserForm({ className }) {
             </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        本当に退会してもよろしいですか？
-                    </h2>
+                <div className='mx-24 mt-10'>
+                    <form onSubmit={deleteUser} className="p-6">
+                        <h2 className="text-lg font-medium text-gray-900 text-left">
+                            本当に退会してもよろしいですか？
+                        </h2>
 
-                    <p className="mt-1 text-sm text-gray-600">
-                        アカウントを削除すると、そのリソースとデータはすべて永久に削除されます。
-                        <br/>念の為、パスワードを入力してからアカウントの永久削除を希望してください。
-                    </p>
+                        {/* <p className="mt-1 text-sm text-gray-600">
+                            アカウントを削除すると、そのリソースとデータはすべて永久に削除されます。
+                            <br/>念の為、パスワードを入力してからアカウントの永久削除を希望してください。
+                        </p> */}
 
-                    <div className="mt-6">
-                        <InputLabel htmlFor="password" value="Password" className="sr-only" />
+                        <div className="mt-6">
+                            <InputLabel htmlFor="password" value="Password" className="sr-only" />
 
-                        <TextInput
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder="パスワード"
-                        />
+                            <TextInput
+                                id="password"
+                                type="password"
+                                name="password"
+                                ref={passwordInput}
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                className="mt-1 block w-full"
+                                isFocused
+                                placeholder="パスワード"
+                            />
 
-                        <InputError message={errors.password} className="mt-2" />
-                    </div>
+                            <InputError message={errors.password} className="mt-2" />
+                        </div>
 
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>キャンセル</SecondaryButton>
-
-                        <DangerButton className="ml-3" disabled={processing}>
-                            アカウントを削除
-                        </DangerButton>
-                    </div>
-                </form>
+                        <div className="my-10 flex justify-between">
+                            <SecondaryButton className="w-48" onClick={closeModal}>
+                                <span className='text-lg m-auto leading-10'>キャンセル</span>
+                            </SecondaryButton>
+                            <DangerButton className="w-48" disabled={processing}>
+                                <span className='text-lg m-auto leading-10'>アカウントを削除</span>
+                            </DangerButton>
+                        </div>
+                    </form>
+                </div>
             </Modal>
         </section>
     );
