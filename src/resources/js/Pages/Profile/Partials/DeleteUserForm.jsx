@@ -54,7 +54,9 @@ export default function DeleteUserForm({ className }) {
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>アカウントを削除</DangerButton>
+            <DangerButton className="w-64" onClick={confirmUserDeletion}>
+                        <span className='text-lg m-auto leading-10'>アカウントを削除</span>
+            </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
