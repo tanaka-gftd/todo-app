@@ -38,15 +38,7 @@ export default function UpdatePasswordForm({ className }) {
 
     return (
         <section className={className}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">パスワードを変更する</h2>
-
-                <p className="mt-1 text-sm text-gray-600">
-                    アカウントの安全性を保つために、長くてランダムなパスワードを使用していることを確認してください。
-                </p>
-            </header>
-
-            <form onSubmit={updatePassword} className="mt-6 space-y-6">
+            <form onSubmit={updatePassword} className="space-y-6">
                 <div>
                     <InputLabel className='text-xl' htmlFor="current_password" value="現在のパスワード" />
 

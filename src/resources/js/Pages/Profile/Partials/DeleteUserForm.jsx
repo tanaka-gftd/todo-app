@@ -45,14 +45,6 @@ export default function DeleteUserForm({ className }) {
 
     return (
         <section className={`space-y-6 ${className}`}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">アカウントを削除する</h2>
-
-                <p className="mt-1 text-sm text-gray-600">
-                    アカウントが削除されると、そのリソースとデータはすべて永久に削除されます。<br/>
-                    アカウントを削除する前に、保持したいデータまたは情報をダウンロードしておくことをお勧めいたします。
-                </p>
-            </header>
 
             <DangerButton className="w-64" onClick={confirmUserDeletion}>
                         <span className='text-lg m-auto leading-10'>アカウントを削除</span>
@@ -64,11 +56,6 @@ export default function DeleteUserForm({ className }) {
                         <h2 className="text-lg font-medium text-gray-900 text-left">
                             本当に退会してもよろしいですか？
                         </h2>
-
-                        {/* <p className="mt-1 text-sm text-gray-600">
-                            アカウントを削除すると、そのリソースとデータはすべて永久に削除されます。
-                            <br/>念の為、パスワードを入力してからアカウントの永久削除を希望してください。
-                        </p> */}
 
                         <div className="mt-6">
                             <InputLabel htmlFor="password" value="Password" className="sr-only" />

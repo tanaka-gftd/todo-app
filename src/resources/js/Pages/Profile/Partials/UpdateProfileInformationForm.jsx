@@ -21,15 +21,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
     return (
         <section className={className}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">アカウント情報を編集する</h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    アカウントのプロフィール情報、メールアドレスを更新する。
-                </p>
-            </header>
-
-            <form onSubmit={submit} className="mt-6 space-y-6">
+            <form onSubmit={submit} className="space-y-6">
                 <div>
                     <InputLabel className='text-xl' htmlFor="name" value="氏名" />
 
