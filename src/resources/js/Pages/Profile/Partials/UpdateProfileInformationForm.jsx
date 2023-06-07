@@ -31,11 +31,11 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="氏名" />
+                    <InputLabel className='text-xl' htmlFor="name" value="氏名" />
 
                     <TextInput
                         id="name"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full text-xl"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         required
@@ -47,12 +47,12 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="メールアドレス" />
+                    <InputLabel className='text-xl' htmlFor="email" value="メールアドレス" />
 
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full text-xl"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -85,7 +85,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>保存</PrimaryButton>
+                    <PrimaryButton className="w-32" disabled={processing}>
+                        <span className='text-lg m-auto leading-10'>保存</span>
+                    </PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
