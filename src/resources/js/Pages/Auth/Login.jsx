@@ -76,7 +76,12 @@ export default function Login({ status, canResetPassword }) {
 
                     <div className="block mt-10">
                         <div className="flex items-center">
-                            <Checkbox  className="flex items-center focus:ring-transparent" name="remember" value={data.remember} onChange={handleOnChange} />
+                            <Checkbox  
+                                className="flex items-center focus:ring-transparent" 
+                                name="remember" 
+                                value={data.remember} 
+                                onChange={handleOnChange}
+                            />
                             <span className="ml-2 text-lg text-gray-600">ログインしたままにする</span>
                         </div>
                     </div>
@@ -96,10 +101,16 @@ export default function Login({ status, canResetPassword }) {
                         </PrimaryButton>
                     </div>
 
-                    <SecondaryButton className="my-10 px-0 py-0 w-full border-solid border-2 border-blue-400">
-                            <Link className='text-lg leading-10 p-2 w-full text-blue-700' href={route('register')}>
-                                    <span className=''>ユーザ登録する</span>
-                            </Link>
+                    <SecondaryButton 
+                        className="my-10 px-0 py-0 w-full border-solid border-2 border-blue-400"
+                        style={{padding:'0px'}}
+                    >
+                        <Link 
+                            className='text-lg leading-10 py-4 w-full text-blue-700' 
+                            href={route('register')}
+                        >
+                            ユーザ登録する
+                        </Link>
                     </SecondaryButton>
                 </form>
             </div>
