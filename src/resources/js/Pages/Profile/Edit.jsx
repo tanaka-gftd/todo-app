@@ -8,7 +8,6 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
         <AuthenticatedLayout
             auth={auth}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">アカウントページ</h2>}
         >
             <Head title="アカウントページ" />
 
