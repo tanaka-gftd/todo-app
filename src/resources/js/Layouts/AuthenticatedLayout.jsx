@@ -1,9 +1,13 @@
 import Dropdown from '@/Components/Dropdown';
 import TextInput from '@/Components/TextInput';
 import { usePage } from '@inertiajs/react';
+import ButtonWithoutButtonTag from '@/Components/ButtonWithoutButtonTag';
 
 export default function Authenticated({ auth, header, children }) {
-    const { url, component } = usePage();
+    const { url } = usePage();
+
+    const dropDawnTextStyle = 'underline underline-offset-8 decoration-blue-400 text-xl text-blue-700 hover:text-gray-700 hover:decoration-gray-400'
+    
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="border-b border-gray-100 bg-black">
@@ -48,11 +52,16 @@ export default function Authenticated({ auth, header, children }) {
                                 </Dropdown.Trigger>
 
                                 <Dropdown.Content>
-                                    <Dropdown.Link href={route('profile.edit')}>
-                                        プロフィール
+                                    <Dropdown.Link href={route('profile.edit')} className={url === '/dashboard' ? dropDawnTextStyle : 'hidden'}>
+                                        <p className='text-lg'>アカウント</p>
+                                    </Dropdown.Link>
+                                    <Dropdown.Link href={route('dashboard')} className={url === '/profile' ? dropDawnTextStyle : 'hidden'}>
+                                        <p className='text-lg'>ダッシュボード</p>
                                     </Dropdown.Link>
                                     <Dropdown.Link href={route('logout')} method="post" as="button">
-                                        ログアウト
+                                        <ButtonWithoutButtonTag className='bg-red-600 w-full justify-center'>
+                                            <p className='text-lg'>ログアウト</p>
+                                        </ButtonWithoutButtonTag>
                                     </Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
