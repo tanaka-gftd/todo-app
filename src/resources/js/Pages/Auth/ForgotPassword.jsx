@@ -25,14 +25,14 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
 
             <div className='mx-5'>
-                <div className="text-4xl mt-8 mb-10">
+                <div className="text-4xl my-16">
                     パスワードの再設定
                 </div>
 
                 {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
                 <form onSubmit={submit}>
-                    <div className='flex justify-between items-center'>
+                    <div className='flex justify-between items-center my-10'>
                         <InputLabel className='text-xl' htmlFor="email" value="メールアドレス" />
                         <TextInput
                             id="email"
@@ -48,7 +48,7 @@ export default function ForgotPassword({ status }) {
                     <InputError message={errors.email} className="mt-2" />
 
                     <PrimaryButton 
-                        className="mt-20 mb-14 border-solid border-2 border-blue-400 w-full" 
+                        className="mt-10 mb-14 border-solid border-2 border-blue-400 w-full" 
                         disabled={processing}
                     >
                         <div className='text-lg leading-10 p-1 w-full'>

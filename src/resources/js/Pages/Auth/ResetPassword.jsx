@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function ResetPassword({ token, email }) {
+export default function ResetPassword({ token, email }) {    
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
@@ -14,9 +14,16 @@ export default function ResetPassword({ token, email }) {
         password_confirmation: '',
     });
 
+    /*
+        設計図を見る限り、パスワードのリセット画面にパスワードの再入力項目がない。
+        が、LaravelBreezeでパスワードのリセットするには、再入力されたパスワードの値が必要。
+        なので、値をコピーすることで対処。
+    */
+    data.password_confirmation = data.password;
+    
     useEffect(() => {
         return () => {
-            reset('password', 'password_confirmation');
+            reset('password', 'password_confirmation');  //'password_confirmation'は省略可能と思われるが、念のため削除せず
         };
     }, []);
 
@@ -32,63 +39,38 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout>
-            <Head title="Reset Password" />
+            <Head title="パスワードの再設定" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+            <div className='mx-5'>
+                <div className="text-4xl my-16">
+                    パスワードの再設定
+                </div>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={onHandleChange}
-                    />
-
+                <form onSubmit={submit}>
+                    
+                    <div className="flex justify-between my-10 items-center">
+                        <InputLabel className='text-xl' htmlFor="password" value="パスワード" />
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            className="block w-96 text-xl"
+                            autoComplete="current-password"
+                            onChange={onHandleChange}
+                            placeholder="テキストを追加"
+                        />
+                    </div>
                     <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        isFocused={true}
-                        onChange={onHandleChange}
-                    />
-
                     <InputError message={errors.password} className="mt-2" />
-                </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={onHandleChange}
-                    />
-
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        Reset Password
+                    <PrimaryButton className="mt-10 mb-14 border-solid border-2 border-blue-400 w-full" disabled={processing} >
+                        <div className='text-lg leading-10 p-1 w-full'>
+                            パスワードを再設定する
+                        </div>
                     </PrimaryButton>
-                </div>
-            </form>
+                </form>
+            </div>
         </GuestLayout>
     );
 }

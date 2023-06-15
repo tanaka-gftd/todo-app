@@ -83,6 +83,16 @@ services:
       - PMA_HOST=db
       - PMA_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
 
+
+  #mailhog...開発用メールサーバを提供する
+  mail:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+
 #データベースのデータを永続化
 volumes:
   db-volume:

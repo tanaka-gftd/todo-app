@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have emailed your password reset link!',
+    'reset' => '',  // 設計図を見る限り'reset'は不要だが、どんな影響が出るかわからないので、削除はせずに空の文字列を返すようにする
+    'sent' => 'パスワードの再設定用URLを電子メールで送信しました！',
     'throttled' => 'Please wait before retrying.',
-    'token' => 'This password reset token is invalid.',
+    'token' => 'パスワードリセットできません。再度、最初最初からやり直してください。',
     'user' => "このメールアドレスは登録されていません。",
 
 ];
