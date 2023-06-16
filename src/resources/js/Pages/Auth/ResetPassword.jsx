@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {    
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -65,9 +65,12 @@ export default function ResetPassword({ token, email }) {
                     <InputError message={errors.password} className="mt-2" />
 
                     <PrimaryButton className="mt-10 mb-14 border-solid border-2 border-blue-400 w-full" disabled={processing} >
-                        <div className='text-lg leading-10 p-1 w-full'>
+                        <Link 
+                            className='text-lg leading-10 py-1 w-full' 
+                            href={route('password.reset.completed')}
+                        >
                             パスワードを再設定する
-                        </div>
+                        </Link>
                     </PrimaryButton>
                 </form>
             </div>
