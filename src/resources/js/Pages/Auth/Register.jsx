@@ -34,7 +34,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="ユーザ登録" />
 
-            <div className='mx-5'>
+            <div className='mx-10'>
                 <div className="text-4xl mt-8 mb-10">
                     ユーザ登録
                 </div>

@@ -41,7 +41,7 @@ export default function ResetPassword({ token, email }) {
         <GuestLayout>
             <Head title="パスワードの再設定" />
 
-            <div className='mx-5'>
+            <div className='mx-10'>
                 <div className="text-4xl my-16">
                     パスワードの再設定
                 </div>

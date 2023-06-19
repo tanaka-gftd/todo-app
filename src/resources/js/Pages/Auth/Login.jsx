@@ -37,7 +37,7 @@ export default function Login({ status, canResetPassword }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
-            <div className='mx-5'>
+            <div className='mx-10'>
                 <div className="text-4xl mt-8 mb-10">
                     ログイン
                 </div>

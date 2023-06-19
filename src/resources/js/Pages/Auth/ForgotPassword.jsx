@@ -24,7 +24,7 @@ export default function ForgotPassword({ status }) {
         <GuestLayout>
             <Head title="Forgot Password" />
 
-            <div className='mx-5'>
+            <div className='mx-10'>
                 <div className="text-4xl my-16">
                     パスワードの再設定
                 </div>

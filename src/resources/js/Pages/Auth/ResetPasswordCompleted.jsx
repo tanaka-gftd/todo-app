@@ -6,7 +6,7 @@ export default function ResetPasswordCompleted() {
     return (
         <GuestLayout>
             <Head title="パスワード再設定完了" />
-            <div className='mx-5'>
+            <div className='mx-10'>
                 <div className="text-4xl my-16">
                     パスワードの再設定
                 </div>
