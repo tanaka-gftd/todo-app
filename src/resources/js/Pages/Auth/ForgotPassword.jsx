@@ -22,7 +22,7 @@ export default function ForgotPassword({ status }) {
 
     return (
         <GuestLayout>
-            <Head title="Forgot Password" />
+            <Head title="パスワード再設定の申し込み" />
 
             <div className='mx-10'>
                 <div className="text-4xl my-16">
