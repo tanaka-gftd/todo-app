@@ -3,7 +3,6 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
-import DangerButton from '@/Components/DangerButton';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function TaskPageLeftSide() {
@@ -11,30 +10,36 @@ export default function TaskPageLeftSide() {
     //タスクリストをリスト表示するために、個々のリストタイトルを配列で保持
     const [listTitleArray, setListTitleArray] = useState([]);
 
-    //タスク追加用モーダルの表示フラグ
+    //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
 
-    //リストの要素を作成する関数
-    const taskList = (listTitle, index) => {
-        return (
-            <div className='py-4' key={index}>{listTitle}</div>    
-        )
-    };
+    //入力されたタスクリストの名前を保持する変数
+    const [listTitleName, setListTitleName] = useState('');
 
-    //タスク追加モーダルを表示する
+    //タスクリスト名設定用モーダルを表示する
     const openTaskModal = ()=> {
         setShowTaskModalFlag(true);
     };
 
-    //タスクリストに、新しい要素を追加(仮)
+    //タスクリストに新しい要素を追加
     const addTaskList = () => {
+        if(listTitleName){
+            setListTitleArray([...listTitleArray, listTitleName]);
+        };
         closeModal();
-        setListTitleArray([...listTitleArray, 'text'])
     };
 
-    //タスク追加モーダルを閉じる
+    //タスクリスト名設定用モーダルを閉じる
     const closeModal = () => {
+        setListTitleName('');
         setShowTaskModalFlag(false);
+    };
+
+    //作成されたタスクリストを表示する関数
+    const taskList = (listTitle, index) => {
+        return (
+            <div className='py-4' key={index}>{listTitle}</div>    
+        )
     };
 
 
@@ -73,6 +78,8 @@ export default function TaskPageLeftSide() {
                                 className="text-2xl w-full leading-5 py-4"
                                 isFocused
                                 placeholder="リスト名"
+                                onChange={(e) => setListTitleName(e.target.value)}
+                                required
                             />
                         </div>
 
