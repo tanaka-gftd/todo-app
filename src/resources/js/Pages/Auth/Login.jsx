@@ -102,7 +102,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
 
                     <SecondaryButton 
-                        className="my-10 px-0 py-0 w-full border-solid border-2"
+                        className="my-10 px-0 py-0 w-full"
                         style={{padding:'0px'}}
                     >
                         <Link 
