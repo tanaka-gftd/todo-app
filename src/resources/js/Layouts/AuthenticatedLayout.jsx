@@ -1,7 +1,7 @@
 import Dropdown from '@/Components/Dropdown';
 import TextInput from '@/Components/TextInput';
 import { usePage } from '@inertiajs/react';
-import ButtonWithoutButtonTag from '@/Components/ButtonWithoutButtonTag';
+import DangerButton from '@/Components/DangerButton';
 
 export default function Authenticated({ auth, header, children }) {
     const { url } = usePage();
@@ -59,9 +59,9 @@ export default function Authenticated({ auth, header, children }) {
                                         <p className='text-lg'>ダッシュボード</p>
                                     </Dropdown.Link>
                                     <Dropdown.Link href={route('logout')} method="post" as="button">
-                                        <ButtonWithoutButtonTag className='bg-red-600 w-full justify-center'>
+                                        <DangerButton className='w-full justify-center'>
                                             <p className='text-lg'>ログアウト</p>
-                                        </ButtonWithoutButtonTag>
+                                        </DangerButton>
                                     </Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
