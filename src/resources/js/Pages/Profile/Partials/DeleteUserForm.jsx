@@ -77,7 +77,7 @@ export default function DeleteUserForm({ className }) {
 
                         <div className="my-10 flex justify-between">
                             <SecondaryButton className="w-48" onClick={closeModal}>
-                                <span className='text-lg m-auto leading-10'>キャンセル</span>
+                                <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
                             </SecondaryButton>
                             <DangerButton className="w-48" disabled={processing}>
                                 <span className='text-lg m-auto leading-10'>アカウントを削除</span>
