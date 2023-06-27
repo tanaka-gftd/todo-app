@@ -53,10 +53,10 @@ export default function Authenticated({ auth, header, children }) {
 
                                 <Dropdown.Content>
                                     <Dropdown.Link href={route('profile.edit')} className={url === '/dashboard' ? dropDawnTextStyle : 'hidden'}>
-                                        <p className='text-lg'>アカウント</p>
+                                        <p className='text-lg text-blue-700'>アカウント</p>
                                     </Dropdown.Link>
                                     <Dropdown.Link href={route('dashboard')} className={url === '/profile' ? dropDawnTextStyle : 'hidden'}>
-                                        <p className='text-lg'>ダッシュボード</p>
+                                        <p className='text-lg text-blue-700'>ダッシュボード</p>
                                     </Dropdown.Link>
                                     <Dropdown.Link href={route('logout')} method="post" as="button">
                                         <ButtonWithoutButtonTag className='bg-red-600 w-full justify-center'>
