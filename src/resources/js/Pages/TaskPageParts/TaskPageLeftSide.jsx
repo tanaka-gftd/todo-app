@@ -66,7 +66,7 @@ export default function TaskPageLeftSide() {
                 </SecondaryButton>
             </div>
 
-            <Modal show={showTaskModalFlag}>
+            <Modal show={showTaskModalFlag} onClose={closeModal}>
                 <div className='mx-20 mt-10'>
                     <form className="p-6">
                         <div className="">
