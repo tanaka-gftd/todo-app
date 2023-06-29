@@ -1,45 +1,64 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SecondaryButton from '@/Components/SecondaryButton';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { useForm } from '@inertiajs/react';
 
 export default function TaskPageLeftSide() {
 
     //タスクリストをリスト表示するために、個々のリストタイトルを配列で保持
-    const [listTitleArray, setListTitleArray] = useState([]);
+    //const [listTitleArray, setListTitleArray] = useState([]);
 
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
 
     //入力されたタスクリストの名前を保持する変数
-    const [listTitleName, setListTitleName] = useState('');
+    //const [listTitleName, setListTitleName] = useState('');
+
+
+    /* //タスクリストに新しい要素を追加
+    const addTaskList = () => {
+        if(listTitleName){
+            setListTitleArray([...listTitleArray, listTitleName]);
+        };
+        closeModal();
+    }; */
+
 
     //タスクリスト名設定用モーダルを表示する
     const openTaskModal = ()=> {
         setShowTaskModalFlag(true);
     };
 
-    //タスクリストに新しい要素を追加
-    const addTaskList = () => {
-        if(listTitleName){
-            setListTitleArray([...listTitleArray, listTitleName]);
-        };
-        closeModal();
-    };
-
     //タスクリスト名設定用モーダルを閉じる
     const closeModal = () => {
-        setListTitleName('');
+        reset('taskListTitle');  //taskListTitleに格納された文字列をリセット
         setShowTaskModalFlag(false);
     };
 
-    //作成されたタスクリストを表示する関数
+    /* //作成されたタスクリストを表示する関数
     const taskList = (listTitle, index) => {
         return (
             <div className='py-4' key={index}>{listTitle}</div>    
         )
+    }; */
+
+    //モーダルウィンドウ内のタスクリストの名前入力フォーム用
+    const {data, setData, post, processing, errors, reset} = useForm({
+        taskListTitle: ''
+    });
+
+    //モーダルウィンドウ内のフォームに入力された文字列を、useFormのsetDataメソッドでtaskListTitleに格納
+    const handleOnChange = (e) => {
+        setData('taskListTitle', e.target.value);
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route('tasklist.register'));
+        closeModal();
     };
 
 
@@ -52,11 +71,11 @@ export default function TaskPageLeftSide() {
             </div>
 
             <div>
-                <ul>
+                {/* <ul>
                     <li>
                         {listTitleArray.map((value, index) => taskList(value, index))}
                     </li>
-                </ul>
+                </ul> */}
                 <SecondaryButton 
                     className='mt-4 mb-8 border-solid border-2 border-blue-500'
                     onClick={()=>openTaskModal()}
@@ -68,7 +87,7 @@ export default function TaskPageLeftSide() {
 
             <Modal show={showTaskModalFlag} onClose={closeModal}>
                 <div className='mx-20 mt-10'>
-                    <form className="p-6">
+                    <form className="p-6" onSubmit={submit}>
                         <div className="">
                             <InputLabel htmlFor="text" value="text" className="sr-only" />
                             <TextInput
@@ -78,7 +97,7 @@ export default function TaskPageLeftSide() {
                                 className="text-2xl w-full leading-5 py-4"
                                 isFocused
                                 placeholder="リスト名"
-                                onChange={(e) => setListTitleName(e.target.value)}
+                                onChange={handleOnChange}
                                 required
                             />
                         </div>
@@ -87,7 +106,7 @@ export default function TaskPageLeftSide() {
                             <SecondaryButton className="w-48" onClick={closeModal}>
                                 <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
                             </SecondaryButton>
-                            <PrimaryButton type='button' className="w-48" onClick={addTaskList}>
+                            <PrimaryButton className="w-48" disabled={processing}>
                                 <span className='text-lg m-auto leading-10'>リストを作成</span>
                             </PrimaryButton>
                         </div>

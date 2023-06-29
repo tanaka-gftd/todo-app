@@ -12,6 +12,7 @@ class TaskList extends Model
     protected $table = 'task_lists';
 
     protected $fillable = [
+        'user_id',
         'title'
     ];
 }
