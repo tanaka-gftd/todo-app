@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function () {
     
     //タスクリストの名前登録
     Route::post('/api/tasklist/create', [TaskListController::class, 'register'])->name('tasklist.register');
+
+    //DBからタスクリストの名前抽出
+    Route::get('/api/tasklist/{id}', [TaskListController::class, 'fetch'])->name('tasklist.fetch');
 });
 
 require __DIR__.'/auth.php';

@@ -4,28 +4,18 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
+import axios from 'axios';
 
 export default function TaskPageLeftSide() {
-
-    //タスクリストをリスト表示するために、個々のリストタイトルを配列で保持
-    //const [listTitleArray, setListTitleArray] = useState([]);
 
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
 
-    //入力されたタスクリストの名前を保持する変数
-    //const [listTitleName, setListTitleName] = useState('');
-
-
-    /* //タスクリストに新しい要素を追加
-    const addTaskList = () => {
-        if(listTitleName){
-            setListTitleArray([...listTitleArray, listTitleName]);
-        };
-        closeModal();
-    }; */
-
+    //モーダルウィンドウ内のタスクリストの名前入力フォーム用
+    const {data, setData, post, processing, errors, reset} = useForm({
+        taskListTitle: '',
+    });
 
     //タスクリスト名設定用モーダルを表示する
     const openTaskModal = ()=> {
@@ -38,26 +28,43 @@ export default function TaskPageLeftSide() {
         setShowTaskModalFlag(false);
     };
 
-    /* //作成されたタスクリストを表示する関数
-    const taskList = (listTitle, index) => {
+    //DBから情報を抽出するために、現在のユーザーID取得
+    let userId = usePage().props.auth.user.id;
+
+    //タスクリストの名前を格納した配列(useStateでうまくいかなかったので、pushで要素を増やす形にした)
+    const taskList = [];
+
+    //DBから、ユーザIDを条件にタスクリストの名前を取ってきて、フロント側で保存する
+    const  getTaskList =  async () => {
+
+        //axiosで、バックエンドのDBからレコードを持ってくる
+        const {data} =  await axios.get(`/api/tasklist/${userId}`);
+        
+        //DBから取り出したレコードから、タスクリストの名前を配列に追加していく
+        data.forEach((task) => {taskList.push(task.title)});
+    };
+
+    //作成されたタスクリストを表示する関数(作成中)
+    /* const createTaskList = (listTitle, index) => {
         return (
             <div className='py-4' key={index}>{listTitle}</div>    
         )
     }; */
 
-    //モーダルウィンドウ内のタスクリストの名前入力フォーム用
-    const {data, setData, post, processing, errors, reset} = useForm({
-        taskListTitle: ''
-    });
+    //DBからデータを取ってくるのは初回レンダリング時と、モーダルウィンドウ開閉時
+    useEffect(() => {
+        getTaskList();
+    },[]);
 
     //モーダルウィンドウ内のフォームに入力された文字列を、useFormのsetDataメソッドでtaskListTitleに格納
     const handleOnChange = (e) => {
         setData('taskListTitle', e.target.value);
     };
 
+    //バックエンドに、新しく作成したタスクリストの名前を送信
     const submit = (e) => {
         e.preventDefault();
-        post(route('tasklist.register'));
+        post(route('tasklist.register'));  //DBへ登録
         closeModal();
     };
 
@@ -71,11 +78,6 @@ export default function TaskPageLeftSide() {
             </div>
 
             <div>
-                {/* <ul>
-                    <li>
-                        {listTitleArray.map((value, index) => taskList(value, index))}
-                    </li>
-                </ul> */}
                 <SecondaryButton 
                     className='mt-4 mb-8 border-solid border-2 border-blue-500'
                     onClick={()=>openTaskModal()}

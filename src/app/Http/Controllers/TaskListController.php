@@ -32,4 +32,17 @@ class TaskListController extends Controller
             'title' => $request->taskListTitle,
         ]);
     }
+
+
+    //タスクリストの名前抽出
+    public function fetch()
+    {
+        //フロントエンドから送られてきたURLパラメータ(ユーザーID)を取得
+        $id = request('id');
+
+        //ユーザーIDを条件に、taskListテーブルからレコードを抽出
+        $result = TaskList::where('user_id', $id)->get();
+
+        return $result;
+    }
 }
