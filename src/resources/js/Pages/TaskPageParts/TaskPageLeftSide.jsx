@@ -36,12 +36,16 @@ export default function TaskPageLeftSide() {
 
     //DBから、ユーザIDを条件にタスクリストの名前を取ってきて、フロント側で保存する
     const  getTaskList =  async () => {
-
-        //axiosで、バックエンドのDBからレコードを持ってくる
-        const {data} =  await axios.get(`/api/tasklist/${userId}`);
-        
-        //DBから取り出したレコードから、タスクリストの名前を配列に追加していく
-        data.forEach((task) => {taskList.push(task.title)});
+        try {
+            //axiosで、バックエンドのDBからレコードを持ってくる
+            const {data} =  await axios.get(`/api/tasklist/${userId}`)
+            //DBから取り出したレコードから、タスクリストの名前を配列に追加していく
+            data.forEach((task) => {taskList.push(task.title)});
+        } catch (error){
+            console.error('データを取り出せませんでした', error);
+        } finally {
+            /* 設定予定 */
+        };
     };
 
     //作成されたタスクリストを表示する関数(作成中)
