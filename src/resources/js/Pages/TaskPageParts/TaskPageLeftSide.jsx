@@ -7,7 +7,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 
-export default function TaskPageLeftSide() {
+export default function TaskPageLeftSide(props) {
+
 
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
@@ -41,10 +42,11 @@ export default function TaskPageLeftSide() {
             const {data} =  await axios.get(`/api/tasklist/${userId}`)
             //DBから取り出したレコードから、タスクリストの名前を配列に追加していく
             data.forEach((task) => {taskList.push(task.title)});
+            props.setIsLoading(false);
         } catch (error){
             console.error('データを取り出せませんでした', error);
         } finally {
-            /* 設定予定 */
+            props.setIsLoading(false);
         };
     };
 
