@@ -9,13 +9,15 @@ import axios from 'axios';
 
 export default function TaskPageLeftSide(props) {
 
-
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
 
+    //フロント側でタスクリストの名前を表示する用
+    const [taskListFront, setTaskListFront]= useState([]);
+
     //モーダルウィンドウ内のタスクリストの名前入力フォーム用
     const {data, setData, post, processing, errors, reset} = useForm({
-        taskListTitle: '',
+        NewTaskListTitle: '',
     });
 
     //タスクリスト名設定用モーダルを表示する
@@ -25,24 +27,22 @@ export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルを閉じる
     const closeModal = () => {
-        reset('taskListTitle');  //taskListTitleに格納された文字列をリセット
+        reset('NewTaskListTitle');  //NewTaskListTitleに格納された文字列をリセット
         setShowTaskModalFlag(false);
     };
 
     //DBから情報を抽出するために、現在のユーザーID取得
     let userId = usePage().props.auth.user.id;
 
-    //タスクリストの名前を格納した配列(useStateでうまくいかなかったので、pushで要素を増やす形にした)
-    const taskList = [];
-
     //DBから、ユーザIDを条件にタスクリストの名前を取ってきて、フロント側で保存する
     const  getTaskList =  async () => {
+        props.setIsLoading(true);
         try {
             //axiosで、バックエンドのDBからレコードを持ってくる
-            const {data} =  await axios.get(`/api/tasklist/${userId}`)
-            //DBから取り出したレコードから、タスクリストの名前を配列に追加していく
-            data.forEach((task) => {taskList.push(task.title)});
-            props.setIsLoading(false);
+            const response =  await axios.get(`/api/tasklist/${userId}`);
+            //DBから取り出したレコードから、タスクリストの名前だけの配列を作成し、フロント側で保持する
+            const taskListFromDB = response.data.map((entry) => entry.title);
+            setTaskListFront((taskListFront) => [...taskListFront, ...taskListFromDB]);
         } catch (error){
             console.error('データを取り出せませんでした', error);
         } finally {
@@ -50,21 +50,14 @@ export default function TaskPageLeftSide(props) {
         };
     };
 
-    //作成されたタスクリストを表示する関数(作成中)
-    /* const createTaskList = (listTitle, index) => {
-        return (
-            <div className='py-4' key={index}>{listTitle}</div>    
-        )
-    }; */
-
     //DBからデータを取ってくるのは初回レンダリング時と、モーダルウィンドウ開閉時
     useEffect(() => {
         getTaskList();
     },[]);
 
-    //モーダルウィンドウ内のフォームに入力された文字列を、useFormのsetDataメソッドでtaskListTitleに格納
+    //モーダルウィンドウ内のフォームに入力された文字列を、useFormのsetDataメソッドでNewTaskListTitleに格納
     const handleOnChange = (e) => {
-        setData('taskListTitle', e.target.value);
+        setData('NewTaskListTitle', e.target.value);
     };
 
     //バックエンドに、新しく作成したタスクリストの名前を送信
@@ -74,7 +67,6 @@ export default function TaskPageLeftSide(props) {
         closeModal();
     };
 
-
     return (
         <div className='text-2xl'>
             <div className='mb-8'>
@@ -83,6 +75,12 @@ export default function TaskPageLeftSide(props) {
                 <p className='py-4'>次の7日間</p>
             </div>
 
+            <ul className='mt-28'>
+                {taskListFront.map((listName, index) => {
+                    return <li className='my-8' key={index}>{listName}</li>
+                })}
+            </ul>
+            
             <div>
                 <SecondaryButton 
                     className='mt-4 mb-8 border-solid border-2 border-blue-500'

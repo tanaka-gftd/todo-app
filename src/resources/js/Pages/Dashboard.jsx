@@ -8,8 +8,7 @@ import Loading from '@/Components/Loading';
 
 export default function Dashboard(props) {
     //ローディング表示用
-    const [isLoading, setIsLoading] = useState(true);
-    console.log(isLoading)
+    const [isLoading, setIsLoading] = useState(false);
     
     return (
         <AuthenticatedLayout
