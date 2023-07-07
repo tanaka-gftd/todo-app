@@ -60,10 +60,12 @@ export default function TaskPageLeftSide(props) {
         setData('NewTaskListTitle', e.target.value);
     };
 
-    //バックエンドに、新しく作成したタスクリストの名前を送信
+    //バックエンドに新しく作成したタスクリストの名前を送信 & フロントで表示するリスト追加
     const submit = (e) => {
         e.preventDefault();
         post(route('tasklist.register'));  //DBへ登録
+        //DBへの登録には少し時間がかかるので、新しいタスクリスト名はフロントだけでも追加しておく
+        setTaskListFront((taskListFront) => [...taskListFront, text.value]);
         closeModal();
     };
 
