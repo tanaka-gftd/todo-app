@@ -1,19 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import SecondaryButton from '@/Components/SecondaryButton';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { useForm, usePage } from '@inertiajs/react';
-import axios from 'axios';
+import { useForm } from '@inertiajs/react';
 
 export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
-
-    //フロント側でタスクリストの名前を表示する用
-    const [taskListFront, setTaskListFront]= useState([]);
 
     //モーダルウィンドウ内のタスクリストの名前入力フォーム用
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -31,30 +27,6 @@ export default function TaskPageLeftSide(props) {
         setShowTaskModalFlag(false);
     };
 
-    //DBから情報を抽出するために、現在のユーザーID取得
-    let userId = usePage().props.auth.user.id;
-
-    //DBから、ユーザIDを条件にタスクリストの名前を取ってきて、フロント側で保存する
-    const  getTaskList =  async () => {
-        props.setIsLoading(true);
-        try {
-            //axiosで、バックエンドのDBからレコードを持ってくる
-            const response =  await axios.get(`/api/tasklist/${userId}`);
-            //DBから取り出したレコードから、タスクリストの名前だけの配列を作成し、フロント側で保持する
-            const taskListFromDB = response.data.map((entry) => entry.title);
-            setTaskListFront((taskListFront) => [...taskListFront, ...taskListFromDB]);
-        } catch (error){
-            console.error('データを取り出せませんでした', error);
-        } finally {
-            props.setIsLoading(false);
-        };
-    };
-
-    //DBからデータを取ってくるのは初回レンダリング時と、モーダルウィンドウ開閉時
-    useEffect(() => {
-        getTaskList();
-    },[]);
-
     //モーダルウィンドウ内のフォームに入力された文字列を、useFormのsetDataメソッドでNewTaskListTitleに格納
     const handleOnChange = (e) => {
         setData('NewTaskListTitle', e.target.value);
@@ -65,7 +37,7 @@ export default function TaskPageLeftSide(props) {
         e.preventDefault();
         post(route('tasklist.register'));  //DBへ登録
         //DBへの登録には少し時間がかかるので、新しいタスクリスト名はフロントだけでも追加しておく
-        setTaskListFront((taskListFront) => [...taskListFront, text.value]);
+        props.setTaskListFront([...props.taskListFront, text.value]);
         closeModal();
     };
 
@@ -78,7 +50,7 @@ export default function TaskPageLeftSide(props) {
             </div>
 
             <ul className='mt-28'>
-                {taskListFront.map((listName, index) => {
+                {props.taskListFront.map((listName, index) => {
                     return <li className='my-8' key={index}>{listName}</li>
                 })}
             </ul>
