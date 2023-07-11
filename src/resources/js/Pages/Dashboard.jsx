@@ -9,6 +9,7 @@ import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 
 export default function Dashboard(props) {
+
     //ローディング表示用
     const [isLoading, setIsLoading] = useState(false);
 
@@ -22,12 +23,12 @@ export default function Dashboard(props) {
     const  getTaskList =  async () => {
         setIsLoading(true);
         try {
-            //axiosで、バックエンドのDBからレコードを持ってくる
+            //axiosで、バックエンドのDBからレコードを持ってくる(レスポンスが返るのをawaitで待つ)
             const response =  await axios.get(`/api/tasklist/${userId}`);
-            console.log(response.data)
             //DBから取り出したレコードから、タスクリストの名前だけの配列を作成し、フロント側で保持する
             const taskListFromDB = response.data.map((entry) => entry.title);
-            setTaskListFront((taskListFront) => [...taskListFront, ...taskListFromDB]);
+            setTaskListFront([]);  //データ保持前に、一旦中身をリセット
+            setTaskListFront([...taskListFromDB]);
         } catch (error){
             console.error('データを取り出せませんでした', error);
         } finally {
@@ -35,7 +36,7 @@ export default function Dashboard(props) {
         };
     };
 
-    //DBからデータを取ってくるのは初回レンダリング時
+    //初回レンダリング時にDBからデータを取ってくる
     useEffect(() => {
         getTaskList();
     },[]);
@@ -52,9 +53,8 @@ export default function Dashboard(props) {
                 <div className="max-w-8xl mx-auto px-8 flex justify-between">
                     <div className="p-8 bg-white shadow w-4/12">
                         <TaskPageLeftSide 
-                            setIsLoading={setIsLoading} 
-                            setTaskListFront={setTaskListFront}
                             taskListFront={taskListFront}
+                            getTaskList={getTaskList}
                         />
                     </div>
 
@@ -68,7 +68,7 @@ export default function Dashboard(props) {
                 </div>
             </div>
 
-            {isLoading ? ( <Loading/>):(<>開発用 ローディング終了確認</>)} 
+            {isLoading ? ( <Loading/>):(null)} 
         </AuthenticatedLayout>
     );
 }

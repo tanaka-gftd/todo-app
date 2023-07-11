@@ -4,17 +4,17 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { useForm } from '@inertiajs/react';
 
 export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
 
-    //モーダルウィンドウ内のタスクリストの名前入力フォーム用
-    const {data, setData, post, processing, errors, reset} = useForm({
-        NewTaskListTitle: '',
-    });
+    //新しいタスクリストの名前用
+    const [newTaskListTitle, setNewTaskListTitle] = useState('');
+
+    //多重クリック防止用(inProcessingがtrueで処理中を表す → 処理中はクリック禁止)
+    const [inProcessing, setInProcessing] = useState(false);
 
     //タスクリスト名設定用モーダルを表示する
     const openTaskModal = ()=> {
@@ -23,23 +23,31 @@ export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルを閉じる
     const closeModal = () => {
-        reset('NewTaskListTitle');  //NewTaskListTitleに格納された文字列をリセット
+        setNewTaskListTitle('');  //newTaskListTitleに格納された文字列をリセット
         setShowTaskModalFlag(false);
     };
 
-    //モーダルウィンドウ内のフォームに入力された文字列を、useFormのsetDataメソッドでNewTaskListTitleに格納
+    //モーダルウィンドウ内のフォームに入力された文字列を保持する
     const handleOnChange = (e) => {
-        setData('NewTaskListTitle', e.target.value);
+        setNewTaskListTitle(e.target.value);
     };
 
-    //バックエンドに新しく作成したタスクリストの名前を送信 & フロントで表示するリスト追加
-    const submit = (e) => {
+    //バックエンドに新しく作成したタスクリストの名前を送信
+    const submit = async (e) => {
+        setInProcessing(true); //わずかな時間でも多重クリックできてしまうので、多重クリック防止処理を先に行う
         e.preventDefault();
-        post(route('tasklist.register'));  //DBへ登録
-        //DBへの登録には少し時間がかかるので、新しいタスクリスト名はフロントだけでも追加しておく
-        props.setTaskListFront([...props.taskListFront, text.value]);
-        closeModal();
+        try {
+            //DBへ登録（inertia.jsではpost送信をawaitできない？ようなので、代わりにaxiosでawaitする）
+            await axios.post('/api/tasklist/create', { NewTaskListTitle : newTaskListTitle });
+        } catch(error) {
+            console.error('データを登録できませんでした', error);
+        } finally {
+            closeModal();
+            setInProcessing(false);
+            props.getTaskList();
+        };
     };
+
 
     return (
         <div className='text-2xl'>
@@ -51,6 +59,7 @@ export default function TaskPageLeftSide(props) {
 
             <ul className='mt-28'>
                 {props.taskListFront.map((listName, index) => {
+                    //タスクリストの名前を表示していく
                     return <li className='my-8' key={index}>{listName}</li>
                 })}
             </ul>
@@ -86,7 +95,7 @@ export default function TaskPageLeftSide(props) {
                             <SecondaryButton className="w-48" onClick={closeModal}>
                                 <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
                             </SecondaryButton>
-                            <PrimaryButton className="w-48" disabled={processing}>
+                            <PrimaryButton className="w-48" disabled={inProcessing}>
                                 <span className='text-lg m-auto leading-10'>リストを作成</span>
                             </PrimaryButton>
                         </div>
@@ -99,5 +108,5 @@ export default function TaskPageLeftSide(props) {
                 <p className='py-4'>タグ2</p>
             </div>
         </div>
-    )
+    );
 }
