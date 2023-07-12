@@ -10,11 +10,23 @@ import axios from 'axios';
 
 export default function Dashboard(props) {
 
-    //ローディング表示用
+    //ローディング画面表示用
     const [isLoading, setIsLoading] = useState(false);
 
     //フロント側でタスクリストの名前を表示する用
-    const [taskListFront, setTaskListFront]= useState([]);
+    const [taskListFront, setTaskListFront] = useState([]);
+
+    //DBから抽出したレコードの保持用
+    /* 
+        以下の理由により、console.logで見れるのは、更新前のデータになる。
+            •useStateのset関数は非同期で処理されておりコードの上から順に更新が行われていない
+            •React の仕様で state は次のレンダリングされるタイミングまで反映されない
+        （参考）  https://zenn.dev/takuty/articles/c032310a6643ac 
+        
+        コンソールでの表示と異なり、実際にはデータは更新済みとなるはずなので、問題ない。
+        （state変更の直後に、stateの値をもとに加工するのは控えた方がいいかもしれない）
+    */
+    const [record, setRecord] = useState([]);
 
     //DBから情報を抽出するために、現在のユーザーID取得
     let userId = usePage().props.auth.user.id;
@@ -25,9 +37,13 @@ export default function Dashboard(props) {
         try {
             //axiosで、バックエンドのDBからレコードを持ってくる(レスポンスが返るのをawaitで待つ)
             const response =  await axios.get(`/api/tasklist/${userId}`);
-            //DBから取り出したレコードから、タスクリストの名前だけの配列を作成し、フロント側で保持する
+
+            //バックエンドからのレスポンスのうち、DBのレコード部分だけ取り出して保持
+            const tmp = response.data.map((entry) => entry);
+            setRecord([...tmp]);  //変数recordにDBから抽出したレコード(型は配列)をセット
+
+            //DBから取り出したレコードから、タスクリストの名前だけの配列を作成し、フロント側で保持する(表示用)
             const taskListFromDB = response.data.map((entry) => entry.title);
-            setTaskListFront([]);  //データ保持前に、一旦中身をリセット
             setTaskListFront([...taskListFromDB]);
         } catch (error){
             console.error('データを取り出せませんでした', error);
@@ -75,7 +91,7 @@ export default function Dashboard(props) {
     //バックエンドとのやりとり中かどうかで、表示する画面を切り替える(ここで返されるのがDashBoardコンポーネント)
     return (
         <>
-            {isLoading ? ( <Loading/>):(<MainAria/>)} 
+            {isLoading ? (<Loading/>):(<MainAria/>)} 
         </>
     );
 }
