@@ -28,6 +28,12 @@ export default function Dashboard(props) {
     */
     const [record, setRecord] = useState([]);
 
+    //クリックしたタスクリストの保管時用
+    const [taskIdAndTitle, setTaskIdAndTitle] = useState();
+
+     //クリックしたタスクリストのタスクID保管時用
+    const [clickedTaskId, setClickedTaskId] = useState();
+
     //DBから情報を抽出するために、現在のユーザーID取得
     let userId = usePage().props.auth.user.id;
 
@@ -42,8 +48,10 @@ export default function Dashboard(props) {
             const tmp = response.data.map((entry) => entry);
             setRecord([...tmp]);  //変数recordにDBから抽出したレコード(型は配列)をセット
 
-            //DBから取り出したレコードから、タスクリストの名前だけの配列を作成し、フロント側で保持する(表示用)
-            const taskListFromDB = response.data.map((entry) => entry.title);
+            //DBから取り出したレコードから、[タスクリストのID, タスクリストの名前]を要素とする二重配列を作成する
+            const taskListFromDB = response.data.map((entry) => {
+                return  [entry.id, entry.title]
+            });
             setTaskListFront([...taskListFromDB]);
         } catch (error){
             console.error('データを取り出せませんでした', error);
@@ -56,6 +64,22 @@ export default function Dashboard(props) {
     useEffect(() => {
         getTaskList();
     },[]);
+
+    //子コンポーネント内でタスクリストの名前をクリックした時に実行される関数
+    //引数として、[タスクリストのID, タスクリストの名前] という配列を受け取り親コンポーネントで保存する
+    //クリックされたタスクリストの文字を濃くするために、タスクリストのIDも保存しておく
+    /* 
+        クリックされたタスクリストのIDも取得しておく理由：
+        子コンポーネント側で、タスクリストIDとクリックされたタスクリストIDを比較して文字を濃くするのだが、
+        タスクリストの名前をクリックしていない時点では、taskIdAndTitle（[タスクリストのID, タスクリストの名前]という配列）は未定義のため、
+        taskIdAndTitle[0]はエラーになってしまう。(未定義なのでインデックスでの値の取得ができない)
+        clickedTaskId（タスクリストのIDのみ保存）なら、未定義の段階でもundefinedになるだけなので、
+        一致しているかどうかの比較が可能になる。
+    */
+    const clickTaskList = (arr) => {
+        setTaskIdAndTitle(arr);
+        setClickedTaskId(arr[0]);
+    };
     
     //バックエンドとのやり取り中はローディング画面を挿入するようにしたいので、一旦タスクページ全体を変数に格納
     const MainAria = () => {
@@ -72,11 +96,17 @@ export default function Dashboard(props) {
                             <TaskPageLeftSide 
                                 taskListFront={taskListFront}
                                 getTaskList={getTaskList}
+                                clickTaskList={clickTaskList}
+                                taskIdAndTitle={taskIdAndTitle}
+                                clickedTaskId={clickedTaskId}
                             />
                         </div>
     
                         <div className="p-8 mx-8 bg-red-100 shadow w-4/12">
-                            <TaskPageCenter/>
+                            <TaskPageCenter
+                                taskIdAndTitle={taskIdAndTitle}
+                                taskListFront={taskListFront}
+                            />
                         </div>
     
                         <div className="p-8 bg-white shadow w-4/12">

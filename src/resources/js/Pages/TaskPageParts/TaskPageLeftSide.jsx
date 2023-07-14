@@ -58,9 +58,17 @@ export default function TaskPageLeftSide(props) {
             </div>
 
             <ul className='mt-28'>
-                {props.taskListFront.map((listName, index) => {
+                {props.taskListFront.map((idAndTitle, index) => {
                     //タスクリストの名前を表示していく
-                    return <li className='my-8' key={index}>{listName}</li>
+                    return (
+                        <li onClick={()=>props.clickTaskList(idAndTitle)} 
+                            key={index} 
+                            style={{fontWeight: props.clickedTaskId === idAndTitle[0] ? 'bold' : 'normal'}}
+                            className='my-8'
+                        >
+                            {idAndTitle[1]}
+                        </li>
+                    );
                 })}
             </ul>
             
