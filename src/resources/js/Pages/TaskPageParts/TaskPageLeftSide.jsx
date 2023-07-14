@@ -64,7 +64,7 @@ export default function TaskPageLeftSide(props) {
                         <li onClick={()=>props.clickTaskList(idAndTitle)} 
                             key={index} 
                             style={{fontWeight: props.clickedTaskId === idAndTitle[0] ? 'bold' : 'normal'}}
-                            className='my-8'
+                            className='my-8 cursor-pointer'
                         >
                             {idAndTitle[1]}
                         </li>
