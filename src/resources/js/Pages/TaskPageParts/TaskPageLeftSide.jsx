@@ -17,7 +17,7 @@ export default function TaskPageLeftSide(props) {
     const [inProcessing, setInProcessing] = useState(false);
 
     //タスクリスト名設定用モーダルを表示する
-    const openTaskModal = ()=> {
+    const openTaskListModal = ()=> {
         setShowTaskListModalFlag(true);
     };
 
@@ -75,7 +75,7 @@ export default function TaskPageLeftSide(props) {
             <div>
                 <SecondaryButton 
                     className='mt-4 mb-8 border-solid border-2 border-blue-500'
-                    onClick={()=>openTaskModal()}
+                    onClick={()=>openTaskListModal()}
                 >
                     <p className='text-xl text-blue-700 mt-1'>＋</p>
                     <p className='text-xl text-blue-700 mt-1'>リストを追加</p>
