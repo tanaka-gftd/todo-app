@@ -8,7 +8,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルの表示フラグ
-    const [showTaskModalFlag, setShowTaskModalFlag] = useState(false);
+    const [showTaskListModalFlag, setShowTaskListModalFlag] = useState(false);
 
     //新しいタスクリストの名前用
     const [newTaskListTitle, setNewTaskListTitle] = useState('');
@@ -18,13 +18,13 @@ export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルを表示する
     const openTaskModal = ()=> {
-        setShowTaskModalFlag(true);
+        setShowTaskListModalFlag(true);
     };
 
     //タスクリスト名設定用モーダルを閉じる
     const closeModal = () => {
         setNewTaskListTitle('');  //newTaskListTitleに格納された文字列をリセット
-        setShowTaskModalFlag(false);
+        setShowTaskListModalFlag(false);
     };
 
     //モーダルウィンドウ内のフォームに入力された文字列を保持する
@@ -82,7 +82,7 @@ export default function TaskPageLeftSide(props) {
                 </SecondaryButton>
             </div>
 
-            <Modal show={showTaskModalFlag} onClose={closeModal}>
+            <Modal show={showTaskListModalFlag} onClose={closeModal}>
                 <div className='mx-20 mt-10'>
                     <form className="p-6" onSubmit={submit}>
                         <div className="">
