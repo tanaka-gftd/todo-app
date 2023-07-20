@@ -1,4 +1,5 @@
 import SecondaryButton from "@/Components/SecondaryButton";
+import PrimaryButton from "@/Components/PrimaryButton";
 import { useState } from "react";
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
@@ -51,7 +52,7 @@ export default function TaskPageCenter(props) {
                     </SecondaryButton>
                 </div>
 
-                <Modal show={showTaskDetailModalFlag}>
+                <Modal show={showTaskDetailModalFlag} onClose={closeModal}>
                     <div className='mx-20 my-10'>
                         <form>
                             <InputLabel htmlFor="taskName" value="taskName" className="sr-only" />
@@ -101,6 +102,12 @@ export default function TaskPageCenter(props) {
                                 onChange={handleOnChange}
                                 required
                             />
+
+                            <div className="my-10 flex justify-end">
+                                <PrimaryButton className="w-48">
+                                    <span className='text-lg m-auto leading-10'>タスクを登録</span>
+                                </PrimaryButton>
+                            </div>
                         </form>
                     </div>
                     <p 
