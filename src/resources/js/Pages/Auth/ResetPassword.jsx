@@ -47,6 +47,20 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <form onSubmit={submit}>
+                    <div className="flex justify-between my-10 items-center">
+                        <InputLabel className='text-xl' htmlFor="email" value="メールアドレス"/>
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            className="block w-96 text-xl"
+                            autoComplete="username"
+                            placeholder="テキストを追加"
+                            disabled
+                        />
+                    </div>
+                    
                     
                     <div className="flex justify-between my-10 items-center">
                         <InputLabel className='text-xl' htmlFor="password" value="パスワード" />
@@ -65,12 +79,9 @@ export default function ResetPassword({ token, email }) {
                     <InputError message={errors.password} className="mt-2" />
 
                     <PrimaryButton className="mt-10 mb-14 border-solid border-2 border-blue-400 w-full" disabled={processing} >
-                        <Link 
-                            className='text-lg leading-10 py-1 w-full' 
-                            href={route('password.reset.completed')}
-                        >
+                        <div className='text-lg leading-10 p-1 w-full'>
                             パスワードを再設定する
-                        </Link>
+                        </div>
                     </PrimaryButton>
                 </form>
             </div>
