@@ -29,7 +29,7 @@ export default function Dashboard(props) {
     const [record, setRecord] = useState([]);
 
     //クリックしたタスクリストの保管時用
-    const [taskIdAndTitle, setTaskIdAndTitle] = useState();
+    const [taskListIdAndTitle, setTaskListIdAndTitle] = useState();
 
      //クリックしたタスクリストのタスクID保管時用
     const [clickedTaskId, setClickedTaskId] = useState();
@@ -71,13 +71,13 @@ export default function Dashboard(props) {
     /* 
         クリックされたタスクリストのIDも取得しておく理由：
         子コンポーネント側で、タスクリストIDとクリックされたタスクリストIDを比較して文字を濃くするのだが、
-        タスクリストの名前をクリックしていない時点では、taskIdAndTitle（[タスクリストのID, タスクリストの名前]という配列）は未定義のため、
-        taskIdAndTitle[0]はエラーになってしまう。(未定義なのでインデックスでの値の取得ができない)
+        タスクリストの名前をクリックしていない時点では、taskListIdAndTitle（[タスクリストのID, タスクリストの名前]という配列）は未定義のため、
+        taskListIdAndTitle[0]はエラーになってしまう。(未定義なのでインデックスでの値の取得ができない)
         clickedTaskId（タスクリストのIDのみ保存）なら、未定義の段階でもundefinedになるだけなので、
         一致しているかどうかの比較が可能になる。
     */
     const clickTaskList = (arr) => {
-        setTaskIdAndTitle(arr);
+        setTaskListIdAndTitle(arr);
         setClickedTaskId(arr[0]);
     };
     
@@ -97,14 +97,14 @@ export default function Dashboard(props) {
                                 taskListFront={taskListFront}
                                 getTaskList={getTaskList}
                                 clickTaskList={clickTaskList}
-                                taskIdAndTitle={taskIdAndTitle}
+                                taskListIdAndTitle={taskListIdAndTitle}
                                 clickedTaskId={clickedTaskId}
                             />
                         </div>
     
                         <div className="p-8 mx-8 bg-red-100 shadow w-4/12">
                             <TaskPageCenter
-                                taskIdAndTitle={taskIdAndTitle}
+                                taskListIdAndTitle={taskListIdAndTitle}
                                 taskListFront={taskListFront}
                             />
                         </div>

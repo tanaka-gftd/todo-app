@@ -3,28 +3,45 @@ import { useState } from "react";
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
+import { useForm } from '@inertiajs/react';
 
 
 export default function TaskPageCenter(props) {
 
-    //タスク詳細設定用モーダルの表示フラグ
-    const [showTaskDetailModalFlag, setShowTaskDetailModalFlag] = useState(false);
-
-    //タスク詳細設定用モーダルを表示する
-    const showTaskDetailModal = () => {
-        setShowTaskDetailModalFlag(true);
-    };
-
-    //タスク詳細設定用モーダルを閉じる
-    const closeModal = () => {
-        setShowTaskDetailModalFlag(false);
-    };
-
+    //タスクリストをクリックした後に表示
     const ClickedTaskList = () => {
+
+        const { data, setData, post, processing, errors, reset } = useForm({
+            taskID: props.taskListIdAndTitle[0],
+            taskName: '',
+            priority: '',
+            deadline: '',
+            comment: '',
+        });
+
+         //タスク詳細設定用モーダルの表示フラグ
+        const [showTaskDetailModalFlag, setShowTaskDetailModalFlag] = useState(false);
+
+        //タスク詳細設定用モーダルを表示する
+        const showTaskDetailModal = () => {
+            setShowTaskDetailModalFlag(true);
+        };
+
+        //タスク詳細設定用モーダルを閉じる
+        const closeModal = () => {
+            reset('taskID', 'taskName', 'priority', 'deadline', 'comment');
+            setShowTaskDetailModalFlag(false);
+        };
+
+        //入力された内容や選ばれた内容を保持
+        const handleOnChange = (e) => {
+            setData(e.target.name, e.target.value);
+        };
+
         return (
             <>
                 <div className="flex justify-between">
-                    <p className='text-4xl mt-4'>{props.taskIdAndTitle[1]}</p>
+                    <p className='text-4xl mt-4'>{props.taskListIdAndTitle[1]}</p>
                     <SecondaryButton 
                         className='mt-4 border-solid border-2 border-blue-500'
                         onClick={()=>showTaskDetailModal()}
@@ -44,7 +61,36 @@ export default function TaskPageCenter(props) {
                                 name="taskName"
                                 className="text-2xl w-full leading-5 py-4 my-5"
                                 placeholder="タスクを追加"
+                                onChange={handleOnChange}
+                                required
                             />
+
+                            <div className="flex justify-left items-center mt-5">
+                                <InputLabel  htmlFor="priority" value="優先度" className="text-xl mr-10"/>
+                                <select 
+                                    name="priority" 
+                                    className="text-xl" 
+                                    onChange={handleOnChange} 
+                                    required
+                                >
+                                    <option value="0">高</option>
+                                    <option value="1">中</option>
+                                    <option value="2">低</option>
+                                    <option value="3">なし</option>
+                                </select>
+                            </div>
+
+                            <div className="flex justify-left items-center mt-10 mb-20">
+                                <InputLabel  htmlFor="deadline" value="期限" className="text-xl mr-10"/>
+                                <input 
+                                    name="deadline" 
+                                    type="date" 
+                                    className="text-xl" 
+                                    onChange={handleOnChange} 
+                                    required
+                                />
+                            </div>
+
                             <InputLabel htmlFor="comment" value="comment" className="sr-only" />
                             <TextInput
                                 id="comment"
@@ -52,6 +98,8 @@ export default function TaskPageCenter(props) {
                                 name="comment"
                                 className="text-2xl w-full leading-5 py-4 my-5"
                                 placeholder="コメント"
+                                onChange={handleOnChange}
+                                required
                             />
                         </form>
                     </div>
@@ -66,6 +114,8 @@ export default function TaskPageCenter(props) {
         );
     };
 
+
+    //タスクリスト未作成 or タスクリスト未選択の時に表示
     const UnsetTaskList = () => {
         return (
             <>
@@ -80,7 +130,7 @@ export default function TaskPageCenter(props) {
 
     return (
         <div>
-            {props.taskIdAndTitle ? (<ClickedTaskList/>) : (<UnsetTaskList/>)}
+            {props.taskListIdAndTitle ? (<ClickedTaskList/>) : (<UnsetTaskList/>)}
         </div>
     );
 }
