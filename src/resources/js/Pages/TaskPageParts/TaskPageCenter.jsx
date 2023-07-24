@@ -18,6 +18,7 @@ export default function TaskPageCenter(props) {
             priority: '',
             deadline: '',
             comment: '',
+            isDone: false
         });
 
          //タスク詳細設定用モーダルの表示フラグ
