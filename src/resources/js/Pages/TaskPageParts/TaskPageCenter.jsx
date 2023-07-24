@@ -13,7 +13,7 @@ export default function TaskPageCenter(props) {
     const ClickedTaskList = () => {
 
         const { data, setData, post, processing, errors, reset } = useForm({
-            taskID: props.taskListIdAndTitle[0],
+            taskListId: props.taskListIdAndTitle[0],
             taskName: '',
             priority: '',
             deadline: '',
