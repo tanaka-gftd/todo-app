@@ -14,7 +14,7 @@ class TaskListController extends Controller
     {
         //入力された文字列のチェック
         $request->validate([
-            'NewTaskListTitle' => 'required|string|max:255'
+            'newTaskListTitle' => 'required|string|max:255'
         ]);
 
         /*
@@ -29,7 +29,7 @@ class TaskListController extends Controller
         //task_listテーブルに、レコード登録
         TaskList::create([
             'user_id' => auth()->user()->id,
-            'title' => $request->NewTaskListTitle,
+            'title' => $request->newTaskListTitle,
         ]);
     }
 

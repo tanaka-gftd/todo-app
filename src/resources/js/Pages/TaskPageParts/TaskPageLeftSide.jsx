@@ -4,17 +4,17 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { useForm } from '@inertiajs/react';
+
 
 export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskListModalFlag, setShowTaskListModalFlag] = useState(false);
 
-    //新しいタスクリストの名前用
-    const [newTaskListTitle, setNewTaskListTitle] = useState('');
-
-    //多重クリック防止用(inProcessingがtrueで処理中を表す → 処理中はクリック禁止)
-    const [inProcessing, setInProcessing] = useState(false);
+    const { data, setData, post, processing, errors, reset } = useForm({
+        newTaskListTitle:''
+    });
 
     //タスクリスト名設定用モーダルを表示する
     const openTaskListModal = ()=> {
@@ -23,29 +23,26 @@ export default function TaskPageLeftSide(props) {
 
     //タスクリスト名設定用モーダルを閉じる
     const closeModal = () => {
-        setNewTaskListTitle('');  //newTaskListTitleに格納された文字列をリセット
+        reset('newTaskListTitle');
         setShowTaskListModalFlag(false);
     };
 
     //モーダルウィンドウ内のフォームに入力された文字列を保持する
     const handleOnChange = (e) => {
-        setNewTaskListTitle(e.target.value);
+        setData('newTaskListTitle', e.target.value);
     };
 
     //バックエンドに新しく作成したタスクリストの名前を送信
-    const submit = async (e) => {
-        setInProcessing(true); //わずかな時間でも多重クリックできてしまうので、多重クリック防止処理を先に行う
+    const submit = (e) => {
         e.preventDefault();
-        try {
-            //DBへ登録（inertia.jsではpost送信をawaitできない？ようなので、代わりにaxiosでawaitする）
-            await axios.post('/api/tasklist/create', { NewTaskListTitle : newTaskListTitle });
-        } catch(error) {
-            console.error('データを登録できませんでした', error);
-        } finally {
-            closeModal();
-            setInProcessing(false);
-            props.getTaskList();
-        };
+        post(route('tasklist.register'), {
+            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onError: (errors) => {console.log( errors )},
+            onFinish: () => {
+                closeModal();
+                props.getTaskList();
+            } 
+        });
     };
 
 
@@ -86,14 +83,14 @@ export default function TaskPageLeftSide(props) {
                 <div className='mx-20 mt-10'>
                     <form className="p-6" onSubmit={submit}>
                         <div className="">
-                            <InputLabel htmlFor="text" value="text" className="sr-only" />
+                            <InputLabel htmlFor="newTaskListTitle" value="newTaskListTitle" className="sr-only" />
                             <TextInput
-                                id="text"
+                                id="newTaskListTitle"
                                 type="text"
-                                name="text"
+                                name="newTaskListTitle"
                                 className="text-2xl w-full leading-5 py-4"
                                 isFocused
-                                placeholder="リスト名"
+                                placeholder="新規のリスト名"
                                 onChange={handleOnChange}
                                 required
                             />
@@ -103,7 +100,7 @@ export default function TaskPageLeftSide(props) {
                             <SecondaryButton className="w-48" onClick={closeModal}>
                                 <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
                             </SecondaryButton>
-                            <PrimaryButton className="w-48" disabled={inProcessing}>
+                            <PrimaryButton className="w-48" disabled={processing}>
                                 <span className='text-lg m-auto leading-10'>リストを作成</span>
                             </PrimaryButton>
                         </div>

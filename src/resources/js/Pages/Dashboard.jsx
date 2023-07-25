@@ -99,6 +99,7 @@ export default function Dashboard(props) {
                                 clickTaskList={clickTaskList}
                                 taskListIdAndTitle={taskListIdAndTitle}
                                 clickedTaskId={clickedTaskId}
+                                setIsLoading={setIsLoading}
                             />
                         </div>
     
