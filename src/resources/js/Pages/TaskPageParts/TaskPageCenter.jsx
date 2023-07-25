@@ -46,7 +46,7 @@ export default function TaskPageCenter(props) {
             //tasklistのIDをURLパラメータとして送信
             post(route('task.register', data.taskListId), {
                 onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
-                onError: (errors) => {console.log( errors )},
+                onError: (errors) => {console.error( errors )},
                 onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
             });
         };

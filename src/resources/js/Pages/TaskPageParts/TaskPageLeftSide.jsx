@@ -37,7 +37,7 @@ export default function TaskPageLeftSide(props) {
         e.preventDefault();
         post(route('tasklist.register'), {
             onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
-            onError: (errors) => {console.log( errors )},
+            onError: (errors) => {console.error( errors )},
             onFinish: () => {
                 closeModal();
                 props.getTaskList();
