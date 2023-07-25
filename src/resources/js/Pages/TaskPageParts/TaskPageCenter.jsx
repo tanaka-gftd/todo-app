@@ -15,7 +15,7 @@ export default function TaskPageCenter(props) {
         const { data, setData, post, processing, errors, reset } = useForm({
             taskListId: props.taskListIdAndTitle[0],
             taskName: '',
-            priority: '',
+            priority: "0",  //優先度の初期値は0(優先度なし) *セレクトボックスのvalueにint型は設定できないらしい
             deadline: '',
             comment: '',
             isDone: false
@@ -31,7 +31,7 @@ export default function TaskPageCenter(props) {
 
         //タスク詳細設定用モーダルを閉じる
         const closeModal = () => {
-            reset('taskID', 'taskName', 'priority', 'deadline', 'comment');
+            reset('taskListId', 'taskName', 'priority', 'deadline', 'comment');
             setShowTaskDetailModalFlag(false);
         };
 
@@ -39,6 +39,18 @@ export default function TaskPageCenter(props) {
         const handleOnChange = (e) => {
             setData(e.target.name, e.target.value);
         };
+
+        //タスクを登録
+        const submit = (e) => {
+            e.preventDefault();
+            //tasklistのIDをURLパラメータとして送信
+            post(route('task.register', data.taskListId), {
+                onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+                onError: (errors) => {console.log( errors )},
+                onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
+            });
+        };
+
 
         return (
             <>
@@ -55,7 +67,7 @@ export default function TaskPageCenter(props) {
 
                 <Modal show={showTaskDetailModalFlag} onClose={closeModal}>
                     <div className='mx-20 my-10'>
-                        <form>
+                        <form onSubmit={submit}>
                             <InputLabel htmlFor="taskName" value="taskName" className="sr-only" />
                             <TextInput
                                 id="taskName"
@@ -75,10 +87,10 @@ export default function TaskPageCenter(props) {
                                     onChange={handleOnChange} 
                                     required
                                 >
-                                    <option value="0">高</option>
-                                    <option value="1">中</option>
-                                    <option value="2">低</option>
-                                    <option value="3">なし</option>
+                                    <option value="0">なし</option>
+                                    <option value="1">高</option>
+                                    <option value="2">中</option>
+                                    <option value="3">低</option>
                                 </select>
                             </div>
 
@@ -106,7 +118,7 @@ export default function TaskPageCenter(props) {
 
                             <div className="my-10 flex justify-end">
                                 <PrimaryButton className="w-48">
-                                    <span className='text-lg m-auto leading-10'>タスクを登録</span>
+                                    <span className='text-lg m-auto leading-10' disabled={processing}>タスクを登録</span>
                                 </PrimaryButton>
                             </div>
                         </form>

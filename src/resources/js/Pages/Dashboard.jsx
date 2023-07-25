@@ -106,6 +106,7 @@ export default function Dashboard(props) {
                             <TaskPageCenter
                                 taskListIdAndTitle={taskListIdAndTitle}
                                 taskListFront={taskListFront}
+                                setIsLoading={setIsLoading}
                             />
                         </div>
     

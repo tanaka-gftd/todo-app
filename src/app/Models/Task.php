@@ -16,6 +16,9 @@ class Task extends Model
         'comment',
         'is_done',
         'deadline',
-        'priority'
+        'priority',
+        'task_list_id',
+        'tag_id_1',
+        'tag_id_2'
     ];
 }

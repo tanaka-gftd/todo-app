@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskListController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
 
     //DBからタスクリストの名前抽出
     Route::get('/api/tasklist/{id}', [TaskListController::class, 'fetch'])->name('tasklist.fetch');
+
+    //タスクの登録
+    Route::post('/api/tasklist/{id}/create', [TaskController::class, 'register'])->name('task.register');
 });
 
 require __DIR__.'/auth.php';
