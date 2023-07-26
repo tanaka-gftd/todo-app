@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 
 class TaskListController extends Controller
@@ -34,15 +35,13 @@ class TaskListController extends Controller
     }
 
 
-    //タスクリストの名前抽出
-    public function fetch()
+    //Dashboardコンポーネントのレンダー時に、ユーザーIDを条件にDBから抽出したタスクリストを渡す
+    public function view()
     {
-        //フロントエンドから送られてきたURLパラメータ(ユーザーID)を取得
-        $id = request('id');
+        $id = auth()->user()->id;
 
-        //ユーザーIDを条件に、taskListテーブルからレコードを抽出
-        $result = TaskList::where('user_id', $id)->get();
-
-        return $result;
+        return Inertia::render('Dashboard', [
+            'taskLists' => TaskList::where('user_id', $id)->get()
+        ]);
     }
 }

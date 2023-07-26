@@ -27,9 +27,16 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/api/tasklist', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('tasklist');
+//TaskListControllerのviewメソッドとURLを結びつける
+/* 
+    TaskListControllerのviewメソッドでは、
+        •Dashboardコンポーネントのレンダリング
+        •ユーザーIDを条件にDBから抽出したタスクリストをDashboardコンポーネントに渡す
+    を行っている。
+*/
+Route::get(
+    '/api/tasklist', [TaskListController::class, 'view']
+)->middleware(['auth', 'verified'])->name('tasklist.view');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,9 +45,6 @@ Route::middleware('auth')->group(function () {
     
     //タスクリストの名前登録
     Route::post('/api/tasklist/create', [TaskListController::class, 'register'])->name('tasklist.register');
-
-    //DBからタスクリストの名前抽出
-    Route::get('/api/tasklist/{id}', [TaskListController::class, 'fetch'])->name('tasklist.fetch');
 
     //タスクの登録
     Route::post('/api/tasklist/{id}/create', [TaskController::class, 'register'])->name('task.register');

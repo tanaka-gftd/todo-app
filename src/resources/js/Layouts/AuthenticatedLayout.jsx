@@ -55,7 +55,7 @@ export default function Authenticated({ auth, header, children }) {
                                     <Dropdown.Link href={route('profile.edit')} className={url === '/api/tasklist' ? dropDawnTextStyle : 'hidden'}>
                                         <p className='text-lg text-blue-700'>アカウント</p>
                                     </Dropdown.Link>
-                                    <Dropdown.Link href={route('tasklist')} className={url === '/profile' ? dropDawnTextStyle : 'hidden'}>
+                                    <Dropdown.Link href={route('tasklist.view')} className={url === '/profile' ? dropDawnTextStyle : 'hidden'}>
                                         <p className='text-lg text-blue-700'>ダッシュボード</p>
                                     </Dropdown.Link>
                                     <Dropdown.Link href={route('logout')} method="post" as="button">

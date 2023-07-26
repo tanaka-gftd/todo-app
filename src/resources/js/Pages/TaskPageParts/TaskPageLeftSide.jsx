@@ -12,7 +12,8 @@ export default function TaskPageLeftSide(props) {
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskListModalFlag, setShowTaskListModalFlag] = useState(false);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    //タスクリストの新規作成のフォーム用
+    const { setData, post, processing, reset } = useForm({
         newTaskListTitle:''
     });
 
@@ -37,10 +38,10 @@ export default function TaskPageLeftSide(props) {
         e.preventDefault();
         post(route('tasklist.register'), {
             onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
-            onError: (errors) => {console.error( errors )},
+            onError: (errors) => {console.error(errors)},
             onFinish: () => {
                 closeModal();
-                props.getTaskList();
+                props.setIsLoading(false);  //ダッシュボード画面に切り替え
             } 
         });
     };
@@ -55,15 +56,18 @@ export default function TaskPageLeftSide(props) {
             </div>
 
             <ul className='mt-28'>
-                {props.taskListFront.map((idAndTitle, index) => {
-                    //タスクリストの名前を表示していく
+                {props.taskLists.map((value, index) => { /*タスクリストの名前を表示していく*/
                     return (
-                        <li onClick={()=>props.clickTaskList(idAndTitle)} 
+                        <li 
+                            onClick={()=>{
+                                props.setClickedTaskListId(value.id)
+                                props.setClickedTaskListTitle(value.title)
+                            }} 
                             key={index} 
-                            style={{fontWeight: props.clickedTaskId === idAndTitle[0] ? 'bold' : 'normal'}}
+                            style={{fontWeight: props.clickedTaskId === value.id ? 'bold' : 'normal'}}
                             className='my-8 cursor-pointer'
                         >
-                            {idAndTitle[1]}
+                            {value.title}
                         </li>
                     );
                 })}

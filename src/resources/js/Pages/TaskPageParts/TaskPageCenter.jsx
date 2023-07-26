@@ -12,13 +12,14 @@ export default function TaskPageCenter(props) {
     //タスクリストをクリックした後に表示
     const ClickedTaskList = () => {
 
-        const { data, setData, post, processing, errors, reset } = useForm({
-            taskListId: props.taskListIdAndTitle[0],
+        //タスク詳細設定フォーム用
+        const { data, setData, post, processing, reset } = useForm({
+            taskListId: props.clickedTaskListId,  //選択されたタスクリストのID
             taskName: '',
-            priority: "0",  //優先度の初期値は0(優先度なし) *セレクトボックスのvalueにint型は設定できないらしい
+            priority: "0",  //優先度の初期値は0(優先度なし) *セレクトボックスのvalueにint型は設定できない？
             deadline: '',
             comment: '',
-            isDone: false
+            isDone: false  //初期値は未達成を示すfalse
         });
 
          //タスク詳細設定用モーダルの表示フラグ
@@ -46,7 +47,7 @@ export default function TaskPageCenter(props) {
             //tasklistのIDをURLパラメータとして送信
             post(route('task.register', data.taskListId), {
                 onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
-                onError: (errors) => {console.error( errors )},
+                onError: (errors) => {console.error(errors)},
                 onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
             });
         };
@@ -55,7 +56,7 @@ export default function TaskPageCenter(props) {
         return (
             <>
                 <div className="flex justify-between">
-                    <p className='text-4xl mt-4'>{props.taskListIdAndTitle[1]}</p>
+                    <p className='text-4xl mt-4'>{props.clickedTaskListTitle}</p>
                     <SecondaryButton 
                         className='mt-4 border-solid border-2 border-blue-500'
                         onClick={()=>showTaskDetailModal()}
@@ -136,10 +137,11 @@ export default function TaskPageCenter(props) {
 
 
     //タスクリスト未作成 or タスクリスト未選択の時に表示
+    //タスクリスト未作成か、タスクリスト未選択の判定には、props.taskLists(配列)のlengthで判定
     const UnsetTaskList = () => {
         return (
             <>
-                {props.taskListFront.length === 0 ?
+                {props.taskLists.length === 0 ?
                     (<p className='text-2xl py-4'>タスクリストを作成してください</p>)
                     :(<p className='text-2xl py-4'>タスクリストを選択してください</p>)
                 }
@@ -148,9 +150,10 @@ export default function TaskPageCenter(props) {
     };
 
 
+    //ページ左側のタスクリストをクリックしたかどうかで、表示を切り替える
     return (
-        <div>
-            {props.taskListIdAndTitle ? (<ClickedTaskList/>) : (<UnsetTaskList/>)}
-        </div>
+        <>
+            {props.clickedTaskListId ? (<ClickedTaskList/>) : (<UnsetTaskList/>)}
+        </>
     );
 }
