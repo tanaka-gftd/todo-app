@@ -18,7 +18,7 @@ export default function Dashboard(props) {
     //ローディング画面表示のフラグ(trueでローディング画面に切り替えるようにする)
     const [isLoading, setIsLoading] = useState(false);
 
-     //クリックしたタスクリストのタスクIDを保管する
+    //クリックしたタスクリストのIDを保管する
     const [clickedTaskListId, setClickedTaskListId] = useState();
 
     //クリックしたタスクリストの名前を保管する
