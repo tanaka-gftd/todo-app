@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sub_tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained('tasks');
-            $table->string('title');
+            $table->string('sub_task_title');
             $table->text('comment');
             $table->boolean('is_done');
             $table->date('deadline');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Task;
 
 
 class TaskListController extends Controller
@@ -30,7 +31,7 @@ class TaskListController extends Controller
         //task_listテーブルに、レコード登録
         TaskList::create([
             'user_id' => auth()->user()->id,
-            'title' => $request->newTaskListTitle,
+            'task_list_title' => $request->newTaskListTitle,
         ]);
     }
 
@@ -41,7 +42,11 @@ class TaskListController extends Controller
         $id = auth()->user()->id;
 
         return Inertia::render('Dashboard', [
-            'taskLists' => TaskList::where('user_id', $id)->get()
+            'taskLists' => TaskList::where('user_id', $id)->get(),
+            'tasks' => Task::Join('task_lists','task_list_id','=', 'task_lists.id')
+                        ->where('task_lists.user_id','=', $id)
+                        ->oldest('tasks.id') //orderBy('id', 'asc')->get()と同一
+                        ->get()
         ]);
     }
 }

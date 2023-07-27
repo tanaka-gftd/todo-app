@@ -20,7 +20,7 @@ class TaskController extends Controller
         //tasksテーブルに、レコード登録
         Task::create([
             'task_list_id' => $request->taskListId,
-            'title' => $request->taskName,
+            'task' => $request->taskName,
             'comment' => $request->comment,
             'is_done' => $request->isDone,
             'deadline' => $request->deadline,

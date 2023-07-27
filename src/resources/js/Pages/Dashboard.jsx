@@ -12,6 +12,9 @@ export default function Dashboard(props) {
     //DBからpropsでタスクリストを受け取り、フロント側で保管
     const taskLists = props.taskLists;
 
+    //DBからpropsでタスクを受け取り、フロント側で保管
+    const tasks = props.tasks;
+
     //ローディング画面表示のフラグ(trueでローディング画面に切り替えるようにする)
     const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +25,6 @@ export default function Dashboard(props) {
     const [clickedTaskListTitle, setClickedTaskListTitle] = useState();
 
 
-    
     //バックエンドとのやり取り中はローディング画面に切り替わるようにしたいので、一旦タスクページ全体を変数に格納
     const MainAria = () => {
         return (
@@ -48,6 +50,7 @@ export default function Dashboard(props) {
                         <div className="p-8 mx-8 bg-red-100 shadow w-4/12">
                             <TaskPageCenter
                                 taskLists={taskLists}
+                                tasks={tasks}
                                 clickedTaskListId={clickedTaskListId}
                                 clickedTaskListTitle={clickedTaskListTitle}
                                 setIsLoading={setIsLoading}

@@ -61,13 +61,13 @@ export default function TaskPageLeftSide(props) {
                         <li 
                             onClick={()=>{
                                 props.setClickedTaskListId(value.id)
-                                props.setClickedTaskListTitle(value.title)
+                                props.setClickedTaskListTitle(value.task_list_title)
                             }} 
                             key={index} 
                             style={{fontWeight: props.clickedTaskId === value.id ? 'bold' : 'normal'}}
                             className='my-8 cursor-pointer'
                         >
-                            {value.title}
+                            {value.task_list_title}
                         </li>
                     );
                 })}

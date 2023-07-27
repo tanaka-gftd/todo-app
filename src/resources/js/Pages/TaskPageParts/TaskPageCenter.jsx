@@ -52,6 +52,20 @@ export default function TaskPageCenter(props) {
             });
         };
 
+        //優先度表示用コンポーネントを作成、propsで優先度を表す数値を受け取っている
+        //switch構文によるレンダーは出来ないようなので、else ifで対処する
+        const PriorityColor = ({num}) => {
+            if(num === 3){
+                return (<p className='text-green-500'>優先度 低</p>)
+            } else if(num === 2){
+                return (<p className='text-yellow-500'>優先度 中</p>)
+            } else if(num === 1){
+                return (<p className='text-red-500'>優先度 高</p>)
+            } else {
+                return (<p>優先度 なし</p>)
+            }
+        };
+
 
         return (
             <>
@@ -65,6 +79,27 @@ export default function TaskPageCenter(props) {
                         <p className='text-xl text-blue-700 mt-1'>タスクを追加</p>
                     </SecondaryButton>
                 </div>
+
+                <ul className='mt-16'>
+                    {props.tasks.map((value, index) => {
+                        //表示するタスクは、左エリアでクリックされたタスクリストのIDと一致しているものだけとする
+                        if(value.task_list_id === props.clickedTaskListId){
+                            return (
+                                <li 
+                                    key={index} 
+                                    className='border-b-2 border-neutral-400 mt-4'
+                                >
+                                    <p className="text-3xl">{value.task}</p>
+                                    <div className="flex my-2 text-2xl">
+                                        <p className="mr-4">期限</p>
+                                        <p className='mr-12'>{value.deadline}</p>
+                                        <PriorityColor num={value.priority}/>
+                                    </div>
+                                </li>
+                            );
+                        }
+                    })}
+                </ul>
 
                 <Modal show={showTaskDetailModalFlag} onClose={closeModal}>
                     <div className='mx-20 my-10'>

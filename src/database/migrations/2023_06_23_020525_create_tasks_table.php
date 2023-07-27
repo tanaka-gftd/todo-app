@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('task_list_id')->constrained('task_lists');
             $table->foreignId('tag_id_1')->constrained('tags');
             $table->foreignId('tag_id_2')->constrained('tags');
-            $table->string('title');
+            $table->string('task');
             $table->text('comment');
             $table->boolean('is_done');
             $table->date('deadline');
