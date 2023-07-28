@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\TaskList;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Task;
 
 
 class TaskListController extends Controller
@@ -43,9 +42,21 @@ class TaskListController extends Controller
 
         return Inertia::render('Dashboard', [
             'taskLists' => TaskList::where('user_id', $id)->get(),
-            'tasks' => Task::Join('task_lists','task_list_id','=', 'task_lists.id')
+            'tasks' => TaskList::Join('tasks','task_lists.id','=', 'tasks.task_list_id')
                         ->where('task_lists.user_id','=', $id)
-                        ->oldest('tasks.id') //orderBy('id', 'asc')->get()と同一
+                        ->select(
+                            'task_lists.user_id',
+                            'task_lists.id as task_list_id',
+                            'task_lists.task_list_title',
+                            'tasks.id as task_id',
+                            'tasks.task_list_id',
+                            'tasks.task as task_name',
+                            'tasks.comment',
+                            'tasks.deadline',
+                            'tasks.priority',
+                            'tasks.is_done'
+                        )
+                        ->oldest('tasks.id') //orderBy('id', 'asc')->get()と同一、つまり昇順
                         ->get()
         ]);
     }

@@ -24,6 +24,12 @@ export default function Dashboard(props) {
     //クリックしたタスクリストの名前を保管する
     const [clickedTaskListTitle, setClickedTaskListTitle] = useState();
 
+    //クリックしたタスクのIDを保管する
+    const [clickedTaskId, setClickedTaskId] = useState();
+
+    //クリックしたタスクの名前を保管する
+    const [clickedTask, setClickedTask] = useState();
+
 
     //バックエンドとのやり取り中はローディング画面に切り替わるようにしたいので、一旦タスクページ全体を変数に格納
     const MainAria = () => {
@@ -49,16 +55,20 @@ export default function Dashboard(props) {
     
                         <div className="p-8 mx-8 bg-red-100 shadow w-4/12">
                             <TaskPageCenter
-                                taskLists={taskLists}
                                 tasks={tasks}
                                 clickedTaskListId={clickedTaskListId}
                                 clickedTaskListTitle={clickedTaskListTitle}
+                                setClickedTaskId={setClickedTaskId}
+                                setClickedTask={setClickedTask}
                                 setIsLoading={setIsLoading}
                             />
                         </div>
     
                         <div className="p-8 bg-white shadow w-4/12">
-                            <TaskPageRightSide/>
+                            <TaskPageRightSide
+                                clickedTaskId={clickedTaskId}
+                                clickedTask={clickedTask}
+                            />
                         </div>
                     </div>
                 </div>
