@@ -42,7 +42,7 @@ export default function Dashboard(props) {
                         <div className="p-8 bg-white shadow w-4/12">
                             <TaskPageLeftSide 
                                 taskLists={taskLists}
-                                clickedTaskId={clickedTaskListId}
+                                clickedTaskListId={clickedTaskListId}
                                 setClickedTaskId={setClickedTaskId}
                                 setClickedTaskListId={setClickedTaskListId}
                                 setClickedTaskListTitle={setClickedTaskListTitle}

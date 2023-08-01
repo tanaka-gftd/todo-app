@@ -65,7 +65,7 @@ export default function TaskPageLeftSide(props) {
                                 props.setClickedTaskListTitle(value.task_list_title)
                             }} 
                             key={index} 
-                            style={{fontWeight: props.clickedTaskId === value.id ? 'bold' : 'normal'}}
+                            style={{fontWeight: props.clickedTaskListId === value.id ? 'bold' : 'normal'}}
                             className='my-8 cursor-pointer'
                         >
                             {value.task_list_title}
