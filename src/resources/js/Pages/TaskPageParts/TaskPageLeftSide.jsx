@@ -60,6 +60,7 @@ export default function TaskPageLeftSide(props) {
                     return (
                         <li 
                             onClick={()=>{
+                                props.setClickedTaskId(''); //タスクリストを変更したら、リセット
                                 props.setClickedTaskListId(value.id)
                                 props.setClickedTaskListTitle(value.task_list_title)
                             }} 

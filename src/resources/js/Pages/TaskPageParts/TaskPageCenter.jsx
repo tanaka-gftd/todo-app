@@ -90,7 +90,6 @@ export default function TaskPageCenter(props) {
                                     className='border-b-2 border-neutral-400 mt-4'
                                     onClick={()=>{
                                         props.setClickedTaskId(value.task_id)
-                                        props.setClickedTask(value.task_name)
                                     }} 
                                 >
                                     <p className="text-3xl cursor-pointer">{value.task_name}</p>
@@ -176,11 +175,11 @@ export default function TaskPageCenter(props) {
 
 
     //タスクリスト未作成 or タスクリスト未選択の時に表示
-    //タスクリスト未作成か、タスクリスト未選択の判定には、props.tasks(配列)のlengthで判定
+    //タスクリスト未作成か、タスクリスト未選択の判定には、props.taskLists(配列)のlengthで判定
     const UnsetTaskList = () => {
         return (
             <>
-                {props.tasks.length === 0 ?
+                {props.taskLists.length === 0 ?
                     (<p className='text-2xl py-4'>タスクリストを作成してください</p>)
                     :(<p className='text-2xl py-4'>タスクリストを選択してください</p>)
                 }
