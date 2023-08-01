@@ -1,3 +1,7 @@
+import PrimaryButton from '@/Components/PrimaryButton';
+import DangerButton from '@/Components/DangerButton';
+
+
 export default function TaskPageRightSide(props) {
 
     //優先度表示用
@@ -24,17 +28,29 @@ export default function TaskPageRightSide(props) {
                     //タスクIDは一意なので、表示されるタスクは一つだけになる(はず)
                     if(value.task_id === props.clickedTaskId){
                         return (
-                            <div key={index}>
-                                <p className='text-4xl mt-4'>タスク詳細</p>
-                                <p className="text-2xl mt-12">タスク名</p>
-                                <p className="text-3xl mt-2">{value.task_name}</p>
-                                <p className="text-2xl mt-12">タスクのコメント</p>
-                                <p className="text-3xl mt-2">{value.comment}</p>
-                                <p className="text-2xl mt-12">タスクの期限</p>
-                                <p className="text-3xl mt-2">{value.deadline}</p>
-                                <p className="text-2xl mt-12">タスクの優先度</p>
-                                <PriorityColor num={value.priority}/>
-                            </div>
+                            <>
+                                <div key={index}>
+                                    <p className='text-4xl mt-4'>タスク詳細</p>
+                                    <p className="text-2xl mt-12">タスク名</p>
+                                    <p className="text-3xl mt-2">{value.task_name}</p>
+                                    <p className="text-2xl mt-12">タスクのコメント</p>
+                                    <p className="text-3xl mt-2">{value.comment}</p>
+                                    <p className="text-2xl mt-12">タスクの期限</p>
+                                    <p className="text-3xl mt-2">{value.deadline}</p>
+                                    <p className="text-2xl mt-12">タスクの優先度</p>
+                                    <PriorityColor num={value.priority}/>
+                                </div>
+                                <form className='mt-20'>
+                                    <div className="my-10 flex justify-between">
+                                        <PrimaryButton className="w-48">
+                                            <span className='text-lg m-auto leading-10'>タスク完了</span>
+                                        </PrimaryButton>
+                                        <DangerButton className="w-48">
+                                            <span className='text-lg m-auto leading-10'>タスクを削除</span>
+                                        </DangerButton>
+                                    </div>
+                                </form>
+                            </>
                         );
                     }
                 })
