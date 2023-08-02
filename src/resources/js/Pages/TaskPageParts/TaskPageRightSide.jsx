@@ -28,8 +28,8 @@ export default function TaskPageRightSide(props) {
                     //タスクIDは一意なので、表示されるタスクは一つだけになる(はず)
                     if(value.task_id === props.clickedTaskId){
                         return (
-                            <>
-                                <div key={index}>
+                            <div key={index}>
+                                <div>
                                     <p className='text-4xl mt-4'>タスク詳細</p>
                                     <p className="text-2xl mt-12">タスク名</p>
                                     <p className="text-3xl mt-2">{value.task_name}</p>
@@ -50,7 +50,7 @@ export default function TaskPageRightSide(props) {
                                         </DangerButton>
                                     </div>
                                 </form>
-                            </>
+                            </div>
                         );
                     }
                 })

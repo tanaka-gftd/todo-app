@@ -88,11 +88,14 @@ export default function TaskPageCenter(props) {
                                 <li 
                                     key={index} 
                                     className='border-b-2 border-neutral-400 mt-4'
-                                    onClick={()=>{
-                                        props.setClickedTaskId(value.task_id)
-                                    }} 
+                                    onClick={()=>{props.setClickedTaskId(value.task_id)}} 
                                 >
-                                    <p className="text-3xl cursor-pointer">{value.task_name}</p>
+                                    <p 
+                                        className="text-3xl cursor-pointer"
+                                        style={{fontWeight: props.clickedTaskId === value.task_id ? 'bold' : 'normal'}}
+                                    >
+                                        {value.task_name}
+                                    </p>
                                     <div className="flex my-2 text-2xl">
                                         <p className="mr-4">期限</p>
                                         <p className='mr-12'>{value.deadline}</p>
