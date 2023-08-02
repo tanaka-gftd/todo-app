@@ -56,8 +56,16 @@ class TaskListController extends Controller
                             'tasks.priority',
                             'tasks.is_done'
                         )
-                        ->oldest('tasks.id') //orderBy('id', 'asc')->get()と同一、つまり昇順
+                        ->oldest('tasks.id') //oldest...orderBy(カラム, 'asc')->get()と同一、つまり昇順。(降順ならlatest)
+                        ->whereNull('tasks.deleted_at')//whereNull...指定したカラムが「NULLではない」レコードを抽出
                         ->get()
+                        /*
+                            結合するテーブルに論理削除機能が設定されていないテーブルが含まれていると、
+                            データ抽出時に論理削除されたレコードも取得してしまう。
+                            ↓
+                            なので、whereNull('tasks.deleted_at')を挟むことで、
+                            tasksテーブルのdeleted_atカラムがnullではないレコード(=論理削除されていないレコード)だけが抽出されるようにする。
+                        */
         ]);
     }
 }

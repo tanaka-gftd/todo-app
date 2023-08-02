@@ -48,6 +48,12 @@ Route::middleware('auth')->group(function () {
 
     //タスクの登録
     Route::post('/api/tasklist/{id}/create', [TaskController::class, 'register'])->name('task.register');
+
+    //タスクの更新(タスクを完了にする)
+    Route::put('/api/tasklist/{id}/done', [TaskController::class, 'done'])->name('task.done');
+
+    //タスクの削除
+    Route::post('/api/tasklist/{id}/delete', [TaskController::class, 'delete'])->name('task.delete');
 });
 
 require __DIR__.'/auth.php';

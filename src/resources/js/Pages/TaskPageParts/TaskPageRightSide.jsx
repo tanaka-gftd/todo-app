@@ -1,8 +1,37 @@
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
+import { useForm } from '@inertiajs/react';
 
 
 export default function TaskPageRightSide(props) {
+
+    //タスク完了、タスク削除用
+    const { data, post, put, processing } = useForm({
+        taskId: props.clickedTaskId,  //選択されたタスクのID
+    });
+
+    //タスクを完了
+    const submitDone = (e) => {
+        e.preventDefault();
+        //taskのIDをURLパラメータとして送信
+        put(route('task.done', data.taskId), {
+            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onError: (errors) => {console.error(errors)},
+            onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
+        });
+    };
+
+    //タスクを削除
+    const submitDelete = (e) => {
+        e.preventDefault();
+        //taskのIDをURLパラメータとして送信
+        post(route('task.delete', data.taskId), {
+            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onError: (errors) => {console.error(errors)},
+            onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
+        });
+    };
+
 
     //優先度表示用
     const PriorityColor = ({num}) => {
@@ -40,16 +69,18 @@ export default function TaskPageRightSide(props) {
                                     <p className="text-2xl mt-12">タスクの優先度</p>
                                     <PriorityColor num={value.priority}/>
                                 </div>
-                                <form className='mt-20'>
-                                    <div className="my-10 flex justify-between">
-                                        <PrimaryButton className="w-48">
+                                <div>
+                                    <form className='mt-20 my-10 flex justify-between' onSubmit={submitDone}>
+                                        <PrimaryButton className="w-48" disabled={processing}>
                                             <span className='text-lg m-auto leading-10'>タスク完了</span>
                                         </PrimaryButton>
-                                        <DangerButton className="w-48">
+                                    </form>
+                                    <form className='mt-20 my-10 flex justify-between' onSubmit={submitDelete}>
+                                        <DangerButton className="w-48" disabled={processing}>
                                             <span className='text-lg m-auto leading-10'>タスクを削除</span>
                                         </DangerButton>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         );
                     }

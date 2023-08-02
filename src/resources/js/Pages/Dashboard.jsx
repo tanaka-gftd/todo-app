@@ -47,7 +47,6 @@ export default function Dashboard(props) {
                                 setClickedTaskListId={setClickedTaskListId}
                                 setClickedTaskListTitle={setClickedTaskListTitle}
                                 setIsLoading={setIsLoading}
-                                
                             />
                         </div>
     
@@ -67,6 +66,7 @@ export default function Dashboard(props) {
                             <TaskPageRightSide
                                 tasks={tasks}
                                 clickedTaskId={clickedTaskId}
+                                setIsLoading={setIsLoading}
                             />
                         </div>
                     </div>
