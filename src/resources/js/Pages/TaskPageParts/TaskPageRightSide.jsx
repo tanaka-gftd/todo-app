@@ -69,13 +69,13 @@ export default function TaskPageRightSide(props) {
                                     <p className="text-2xl mt-12">タスクの優先度</p>
                                     <PriorityColor num={value.priority}/>
                                 </div>
-                                <div>
-                                    <form className='mt-20 my-10 flex justify-between' onSubmit={submitDone}>
+                                <div className='flex justify-between'>
+                                    <form className='mt-20 my-10' onSubmit={submitDone}>
                                         <PrimaryButton className="w-48" disabled={processing}>
                                             <span className='text-lg m-auto leading-10'>タスク完了</span>
                                         </PrimaryButton>
                                     </form>
-                                    <form className='mt-20 my-10 flex justify-between' onSubmit={submitDelete}>
+                                    <form className='mt-20 my-10' onSubmit={submitDelete}>
                                         <DangerButton className="w-48" disabled={processing}>
                                             <span className='text-lg m-auto leading-10'>タスクを削除</span>
                                         </DangerButton>
