@@ -56,6 +56,36 @@ export default function TaskPageRightSide(props) {
                     //右エリアに表示するタスクは、中央エリアでクリックされたタスクのIDと一致しているものだけとする
                     //タスクIDは一意なので、表示されるタスクは一つだけになる(はず)
                     if(value.task_id === props.clickedTaskId){
+
+                        /* 
+                            以下2点の理由より、タスク期限の日時がズレる
+                                •inputタグのdateで送信できる日付はUTC。
+                                •本プロジェクトのタイムゾーンはJST。
+
+                            (例)
+                            inputタグのdateで、2023年8月29日(UTC)を送信
+                            ↓
+                            DB側では送信された2023年8月29日を、2023-08-29で保管し、時刻部分は内部で午前0時00分00秒と保持。
+                            ↓
+                            DBからフロントにデータを持ってくる時は、プロジェクトのタイムゾーン(JST)に合わせて、自動で9時間足され、
+                            2023年8月29日午前9時となる。
+                            ↓
+                            期限が過ぎたかどうかのチェックに問題が生じる
+
+                            また、タスクの期限は、指定した期日が終わるまでにしたいので、ここも加工する必要がある。
+
+                            これらの加工は、DBからの抽出時にコントローラ側で行う方法もあるが、
+                            フロントでの加工の方が分かりやすいので、フロントで実施
+                        */
+                        let newDeadline = new Date(value.deadline);
+
+                        //タイムゾーンの違いによる時刻自動修正でずれた時刻を、再修正
+                        //タスク期限は、inputタグのdateで送信じた日が終わるまでにする。
+                        newDeadline.setHours(newDeadline.getHours() - 9);
+                        newDeadline.setHours(23);
+                        newDeadline.setMinutes(59);
+                        newDeadline.setSeconds(59);
+
                         return (
                             <div key={index}>
                                 <div>
@@ -65,11 +95,11 @@ export default function TaskPageRightSide(props) {
                                     <p className="text-2xl mt-12">タスクのコメント</p>
                                     <p className="text-3xl mt-2">{value.comment}</p>
                                     <p className="text-2xl mt-12">タスクの期限</p>
-                                    <p className="text-3xl mt-2">{value.deadline}</p>
+                                    <p className="text-3xl mt-2">{newDeadline.toLocaleDateString()}</p>
                                     <p className="text-2xl mt-12">タスクの優先度</p>
                                     <PriorityColor num={value.priority}/>
                                 </div>
-                                <div className='flex justify-between'>
+                                <div className='flex justify-between px-10'>
                                     <form className='mt-20 my-10' onSubmit={submitDone}>
                                         <PrimaryButton className="w-48" disabled={processing}>
                                             <span className='text-lg m-auto leading-10'>タスク完了</span>
