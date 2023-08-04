@@ -58,7 +58,7 @@ export default function TaskPageCenter(props) {
             if(num === 3){
                 return (<p className='text-green-500'>優先度 低</p>)
             } else if(num === 2){
-                return (<p className='text-yellow-500'>優先度 中</p>)
+                return (<p className='text-yellow-600'>優先度 中</p>)
             } else if(num === 1){
                 return (<p className='text-red-500'>優先度 高</p>)
             } else {

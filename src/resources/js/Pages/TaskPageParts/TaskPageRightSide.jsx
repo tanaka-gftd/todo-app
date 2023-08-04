@@ -3,11 +3,11 @@ import DangerButton from '@/Components/DangerButton';
 import { useForm } from '@inertiajs/react';
 
 
-export default function TaskPageRightSide(props) {
+export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) {
 
     //タスク完了、タスク削除用
     const { data, post, put, processing } = useForm({
-        taskId: props.clickedTaskId,  //選択されたタスクのID
+        taskId: clickedTaskId,  //選択されたタスクのID
     });
 
     //タスクを完了
@@ -15,9 +15,9 @@ export default function TaskPageRightSide(props) {
         e.preventDefault();
         //taskのIDをURLパラメータとして送信
         put(route('task.done', data.taskId), {
-            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onStart: () => setIsLoading(true),  //ローディング画面に切り替え
             onError: (errors) => {console.error(errors)},
-            onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
+            onFinish: () => setIsLoading(false)  //ダッシュボード画面に切り替え
         });
     };
 
@@ -26,9 +26,9 @@ export default function TaskPageRightSide(props) {
         e.preventDefault();
         //taskのIDをURLパラメータとして送信
         post(route('task.delete', data.taskId), {
-            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onStart: () => setIsLoading(true),  //ローディング画面に切り替え
             onError: (errors) => {console.error(errors)},
-            onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
+            onFinish: () => setIsLoading(false)  //ダッシュボード画面に切り替え
         });
     };
 
@@ -38,7 +38,7 @@ export default function TaskPageRightSide(props) {
         if(num === 3){
             return (<p className='text-3xl text-green-500 mt-2'>優先度 低</p>)
         } else if(num === 2){
-            return (<p className='text-3xl text-yellow-500 mt-2'>優先度 中</p>)
+            return (<p className='text-3xl text-yellow-600 mt-2'>優先度 中</p>)
         } else if(num === 1){
             return (<p className='text-3xl text-red-500 mt-2'>優先度 高</p>)
         } else {
@@ -76,7 +76,7 @@ export default function TaskPageRightSide(props) {
         } else if(diff <= count){
             return (<p className="text-xl mt-2 text-red-500">タスクの期限は今日までです！</p>)
         } else if(diff <= count + millisecondDay) {
-            return (<p className="text-xl mt-2 text-yellow-500">タスクの期限は明日までです！</p>)
+            return (<p className="text-xl mt-2 text-yellow-600">タスクの期限は明日までです！</p>)
         } else {
             return null;
         };
@@ -85,13 +85,13 @@ export default function TaskPageRightSide(props) {
 
     return (
         <>
-            {!props.clickedTaskId ? 
+            {!clickedTaskId ? 
                 (<p className='text-xl'>成したタスクを選択すると、ここに詳細が表示されます</p>) 
                 : 
-                props.tasks.map((value, index) => {
+                tasks.map((value, index) => {
                     //右エリアに表示するタスクは、中央エリアでクリックされたタスクのIDと一致しているものだけとする
                     //タスクIDは一意なので、表示されるタスクは一つだけになる(はず)
-                    if(value.task_id === props.clickedTaskId){
+                    if(value.task_id === clickedTaskId){
 
                         /* 
                             以下３点の理由より、タスク期限の日時がズレる
