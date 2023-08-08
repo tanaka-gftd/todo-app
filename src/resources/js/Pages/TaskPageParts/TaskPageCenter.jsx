@@ -140,7 +140,7 @@ export default function TaskPageCenter(props) {
                                 <InputLabel  htmlFor="deadline" value="期限" className="text-xl mr-10"/>
                                 <input 
                                     name="deadline" 
-                                    type="date" /* ここで送信される日付はUTC(協定世界時)なので注意 */
+                                    type="datetime-local" /* datetime-localのタイムゾーンは、ユーザーのローカル*/
                                     className="text-xl" 
                                     onChange={handleOnChange} 
                                     required

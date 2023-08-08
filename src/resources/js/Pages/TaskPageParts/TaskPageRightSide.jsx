@@ -48,38 +48,34 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
 
 
     //タスクの期限の警告表示用
-    //引数として、期限日の23:59:59を持つDateオブジェクトと、タスク完了済みかどうかの真偽値を受け取る
+    //引数として、期限日時のDateオブジェクトと、タスク完了済みかどうかの真偽値を受け取る
     const Deadline = ({date, isDone}) => {
-
-        //今日の日付(JST)を取得し、UTCに修正
-        let now = new Date();
-        now.setHours(now.getHours() - 9);
-
-        //期限までのミリ秒を求める
-        let diff = date.getTime() - now.getTime();
-
-        //期限終了は、期限日の23時59分59秒なので
-        let count = (1000*60*60*23) + (1000*60*59) + (1000*59);
-
-        //1日をミリ秒で換算
-        let millisecondDay = 1000*60*60*24;
 
         //タスク完了済みの場合
         if(isDone){
             return (<p className="text-xl mt-2 text-green-500">このタスクは完了しています。</p>)
         };
 
-        //期限が過ぎた、期限が今日、期限が明日、それ以外、の４パターンで表示する警告を切り替える
+        //現在の日時のDateオブジェクトを生成
+        let now = new Date();
+
+        //期限までのミリ秒を求める
+        let diff = date.getTime() - now.getTime();
+
+        //1日をミリ秒で換算
+        let millisecondDay = 1000*60*60*24;
+
+        //期限が過ぎた、期限まで12時間を切った、期限まで24時間を切った、それ以外、４パターンで表示する警告を切り替える
         //(switch構文ではレンダリング出来ない？ので、elseifで対応)
         if(diff < 0){
             return (<p className="text-xl mt-2 text-red-500">タスクの期限を過ぎています！!</p>)
-        } else if(diff <= count){
-            return (<p className="text-xl mt-2 text-red-500">タスクの期限は今日までです！</p>)
-        } else if(diff <= count + millisecondDay) {
-            return (<p className="text-xl mt-2 text-yellow-600">タスクの期限は明日までです！</p>)
+        } else if(diff <= millisecondDay*1/2){
+            return (<p className="text-xl mt-2 text-red-500">タスクの期限が迫っています！</p>)
+        } else if(diff <= millisecondDay){
+            return (<p className="text-xl mt-2 text-yellow-600">そろそろタスクの期限です</p>)
         } else {
-            return null;
-        };
+            return null
+        }
     };
 
 
@@ -93,20 +89,8 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
                     //タスクIDは一意なので、表示されるタスクは一つだけになる(はず)
                     if(value.task_id === clickedTaskId){
 
-                        /* 
-                            以下３点の理由より、タスク期限の日時がズレる
-                            •inputタグのdateで送信される日付は、UTC時間での日付。
-                            •DBからのデータ取り出し時に、プロジェクトのタイムゾーンに自動で修正される。
-                            •本プロジェクトのタイムゾーンはJST。
-
-                            なので、タイムゾーンの違いによる時刻自動修正でずれた時刻を、再度修正する必要がある。
-                            また、タスク期限は、inputタグのdateで送信した日が終わるまでにする。
-                        */
-                        let date = new Date(value.deadline);
-                        date.setHours(date.getHours() - 9);
-                        date.setHours(23);
-                        date.setMinutes(59);
-                        date.setSeconds(59);
+                        //期限の日時を持つDateオブジェクトを生成
+                        const date = new Date(value.deadline);
 
                         return (
                             <div key={index}>
@@ -117,8 +101,8 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
                                     <p className="text-2xl mt-12">タスクのコメント</p>
                                     <p className="text-3xl mt-2">{value.comment}</p>
                                     <p className="text-2xl mt-12">タスクの期限</p>
-                                    <p className="text-3xl mt-2">{date.toLocaleDateString()}</p>
-                                    <Deadline date={date}  isDone={value.is_done}/>
+                                    <p className="text-3xl mt-2">{date.toLocaleString()}</p>
+                                    <Deadline date={date} isDone={value.is_done}/>
                                     <p className="text-2xl mt-12">タスクの優先度</p>
                                     <PriorityColor num={value.priority}/>
                                 </div>
