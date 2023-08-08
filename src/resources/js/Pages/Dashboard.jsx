@@ -5,6 +5,7 @@ import TaskPageRightSide from './TaskPageParts/TaskPageRightSide';
 import TaskPageCenter from './TaskPageParts/TaskPageCenter';
 import { useState } from 'react';
 import Loading from '@/Components/Loading';
+import Modal from '@/Components/Modal';
 
 
 export default function Dashboard(props) {
@@ -26,6 +27,14 @@ export default function Dashboard(props) {
 
     //クリックしたタスクのIDを保管する
     const [clickedTaskId, setClickedTaskId] = useState();
+
+    //タスクの期限が迫っていることを知らせる通知用モーダルの表示フラグ
+    const [showNotificationModalFlag, setShowNotificationModalFlag] = useState(true);
+
+    //タスクリスト名設定用モーダルを閉じる
+    const closeModal = () => {
+        setShowNotificationModalFlag(false);
+    };
 
 
     //バックエンドとのやり取り中はローディング画面に切り替わるようにしたいので、一旦タスクページ全体を変数に格納
@@ -71,6 +80,16 @@ export default function Dashboard(props) {
                         </div>
                     </div>
                 </div>
+
+                <Modal show={showNotificationModalFlag} onClose={closeModal}>
+                    <div className='mx-20 my-10'>
+                        <p onClick={()=>closeModal()} className="cursor-pointer absolute top-5 right-5 text-4xl">
+                            ×
+                        </p>
+                        <p className="text-2xl">期限が迫っているタスクがあります。</p>
+                        <p className="text-2xl">以下のタスクを確認してください。</p>
+                    </div>
+                </Modal>
             </AuthenticatedLayout>
         );
     };
