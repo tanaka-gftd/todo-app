@@ -57,13 +57,13 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
         };
 
         //現在の日時のDateオブジェクトを生成
-        let now = new Date();
+        const now = new Date();
 
         //期限までのミリ秒を求める
-        let diff = date.getTime() - now.getTime();
+        const diff = date.getTime() - now.getTime();
 
         //1日をミリ秒で換算
-        let millisecondDay = 1000*60*60*24;
+        const millisecondDay = 1000*60*60*24;
 
         //期限が過ぎた、期限まで12時間を切った、期限まで24時間を切った、それ以外、４パターンで表示する警告を切り替える
         //(switch構文ではレンダリング出来ない？ので、elseifで対応)
