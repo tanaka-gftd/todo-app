@@ -116,7 +116,7 @@ export default function Dashboard(props) {
                     </div>
                 </div>
 
-                <Modal show={showNotificationModalFlag} onClose={closeModal}>
+                <Modal show={showNotificationModalFlag} onClose={closeModal} addStyle={'h-4/6'}>
                     <div className='mx-20 my-10'>
                         <p onClick={()=>closeModal()} className="cursor-pointer absolute top-5 right-5 text-4xl">
                             ×
