@@ -82,7 +82,7 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
     return (
         <>
             {!clickedTaskId ? 
-                (<p className='text-xl'>成したタスクを選択すると、ここに詳細が表示されます</p>) 
+                (<p className='text-xl py-4'>作成したタスクを選択すると、ここに詳細が表示されます</p>) 
                 : 
                 tasks.map((value, index) => {
                     //右エリアに表示するタスクは、中央エリアでクリックされたタスクのIDと一致しているものだけとする
