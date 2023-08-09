@@ -12,9 +12,13 @@ export default function TaskPageLeftSide(props) {
     //タスクリスト名設定用モーダルの表示フラグ
     const [showTaskListModalFlag, setShowTaskListModalFlag] = useState(false);
 
-    //タスクリストの新規作成のフォーム用
+    //タグ作成用モーダルの表示フラグ
+    const [showTagModalFlag, setShowTagModalFlag] = useState(false);
+
+    //タスクリストとタグの新規作成フォーム用
     const { setData, post, processing, reset } = useForm({
-        newTaskListTitle:''
+        newTaskListTitle:'',
+        newTag:''
     });
 
     //タスクリスト名設定用モーダルを表示する
@@ -23,7 +27,7 @@ export default function TaskPageLeftSide(props) {
     };
 
     //タスクリスト名設定用モーダルを閉じる
-    const closeModal = () => {
+    const closeTaskListModal = () => {
         reset('newTaskListTitle');
         setShowTaskListModalFlag(false);
     };
@@ -34,18 +38,34 @@ export default function TaskPageLeftSide(props) {
     };
 
     //バックエンドに新しく作成したタスクリストの名前を送信
-    const submit = (e) => {
+    const submitNewTaskList = (e) => {
         e.preventDefault();
         post(route('tasklist.register'), {
             onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
             onError: (errors) => {console.error(errors)},
             onFinish: () => {
-                closeModal();
+                closeTaskListModal();
                 props.setIsLoading(false);  //ダッシュボード画面に切り替え
             } 
         });
     };
 
+    //タグ作成用モーダルを表示する
+    const openTagModal = ()=> {
+        setShowTagModalFlag(true);
+    };
+
+    //タグ作成用モーダルを閉じる
+    const closeTagModal = () => {
+        reset('newTag');
+        setShowTagModalFlag(false);
+    };
+
+    //バックエンドに新しく作成したタグを送信
+    const submitNewTag = (e) => {
+        e.preventDefault();
+        /* 開発中 */
+    };
 
     return (
         <div className='text-2xl'>
@@ -84,10 +104,20 @@ export default function TaskPageLeftSide(props) {
                 </SecondaryButton>
             </div>
 
-            <Modal show={showTaskListModalFlag} onClose={closeModal}>
+            <div>
+                <SecondaryButton 
+                    className='mt-4 mb-8 border-solid border-2 border-blue-500'
+                    onClick={()=>openTagModal()}
+                >
+                    <p className='text-xl text-blue-700 mt-1'>＋</p>
+                    <p className='text-xl text-blue-700 mt-1'>タグを追加</p>
+                </SecondaryButton>
+            </div>
+
+            <Modal show={showTaskListModalFlag} onClose={closeTaskListModal}>
                 <div className='mx-20 mt-10'>
-                    <form className="p-6" onSubmit={submit}>
-                        <div className="">
+                    <form className="p-6" onSubmit={submitNewTaskList}>
+                        <div>
                             <InputLabel htmlFor="newTaskListTitle" value="newTaskListTitle" className="sr-only" />
                             <TextInput
                                 id="newTaskListTitle"
@@ -102,7 +132,7 @@ export default function TaskPageLeftSide(props) {
                         </div>
 
                         <div className="my-10 flex justify-between">
-                            <SecondaryButton className="w-48" onClick={closeModal}>
+                            <SecondaryButton className="w-48" onClick={closeTaskListModal}>
                                 <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
                             </SecondaryButton>
                             <PrimaryButton className="w-48" disabled={processing}>
@@ -113,10 +143,34 @@ export default function TaskPageLeftSide(props) {
                 </div>
             </Modal>
 
-            <div>
-                <p className='py-4'>タグ1</p>
-                <p className='py-4'>タグ2</p>
-            </div>
+            <Modal show={showTagModalFlag} onClose={closeTagModal}>
+                <div className='mx-20 mt-10'>
+                    <form className="p-6" onSubmit={submitNewTag}>
+                        <div>
+                            <InputLabel htmlFor="newTag" value="newTag" className="sr-only" />
+                            <TextInput
+                                id="newTag"
+                                type="text"
+                                name="newTag"
+                                className="text-2xl w-full leading-5 py-4"
+                                isFocused
+                                placeholder="新規のタグ"
+                                onChange={handleOnChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="my-10 flex justify-between">
+                            <SecondaryButton className="w-48" onClick={closeTagModal}>
+                                <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
+                            </SecondaryButton>
+                            <PrimaryButton className="w-48" disabled={processing}>
+                                <span className='text-lg m-auto leading-10'>タグを作成</span>
+                            </PrimaryButton>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
         </div>
     );
 }
