@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskListController;
+use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -54,6 +55,9 @@ Route::middleware('auth')->group(function () {
 
     //タスクの削除
     Route::post('/api/tasklist/{id}/delete', [TaskController::class, 'delete'])->name('task.delete');
+
+    //タスクの登録
+    Route::post('/api/tag/create', [TagController::class, 'register'])->name('tag.register');
 });
 
 require __DIR__.'/auth.php';

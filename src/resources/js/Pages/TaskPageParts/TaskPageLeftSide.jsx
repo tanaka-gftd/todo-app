@@ -34,7 +34,7 @@ export default function TaskPageLeftSide(props) {
 
     //モーダルウィンドウ内のフォームに入力された文字列を保持する
     const handleOnChange = (e) => {
-        setData('newTaskListTitle', e.target.value);
+        setData(e.target.name, e.target.value);
     };
 
     //バックエンドに新しく作成したタスクリストの名前を送信
@@ -64,7 +64,14 @@ export default function TaskPageLeftSide(props) {
     //バックエンドに新しく作成したタグを送信
     const submitNewTag = (e) => {
         e.preventDefault();
-        /* 開発中 */
+        post(route('tag.register'), {
+            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onError: (errors) => {console.error(errors)},
+            onFinish: () => {
+                closeTagModal();
+                props.setIsLoading(false);  //ダッシュボード画面に切り替え
+            } 
+        });
     };
 
     return (
