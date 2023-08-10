@@ -69,10 +69,11 @@ export default function TaskPageCenter(props) {
 
         return (
             <>
-                <div className="flex justify-between">
-                    <p className='text-4xl mt-4'>{props.clickedTaskListTitle}</p>
+                <p className='text-2xl mt-4'>タスクリスト名</p>
+                <div className="flex justify-between mb-10">
+                    <p className='text-3xl mt-2'>{props.clickedTaskListTitle}</p>
                     <SecondaryButton 
-                        className='mt-4 border-solid border-2 border-blue-500'
+                        className='border-solid border-2 border-blue-500'
                         onClick={()=>showTaskDetailModal()}
                     >
                         <p className='text-xl text-blue-700 mt-1'>＋</p>
@@ -80,7 +81,9 @@ export default function TaskPageCenter(props) {
                     </SecondaryButton>
                 </div>
 
-                <ul className='mt-16'>
+                <p className='text-2xl mt-10 border-b-2 border-neutral-400'>タスク一覧</p>
+
+                <ul className='mt-2'>
                     {props.tasks.map((value, index) => {
                         //表示するタスクは、左エリアでクリックされたタスクリストのIDと一致しているものだけとする
                         if(value.task_list_id === props.clickedTaskListId){
