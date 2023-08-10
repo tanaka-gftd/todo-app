@@ -16,6 +16,9 @@ export default function Dashboard(props) {
     //DBからpropsでタスクを受け取り、フロント側で保管
     const tasks = props.tasks;
 
+    //DBからpropsでタグを受け取り、フロント側で保管
+    const tag = props.tag;
+
     //ローディング画面表示のフラグ(trueでローディング画面に切り替えるようにする)
     const [isLoading, setIsLoading] = useState(false);
 
@@ -55,6 +58,7 @@ export default function Dashboard(props) {
                         <div className="p-8 bg-white shadow w-4/12">
                             <TaskPageLeftSide 
                                 taskLists={taskLists}
+                                tag={tag}
                                 clickedTaskListId={clickedTaskListId}
                                 setClickedTaskId={setClickedTaskId}
                                 setClickedTaskListId={setClickedTaskListId}

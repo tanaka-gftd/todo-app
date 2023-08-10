@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\TaskList;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -58,7 +59,7 @@ class TaskListController extends Controller
                         )
                         ->oldest('tasks.id') //oldest...orderBy(カラム, 'asc')->get()と同一、つまり昇順。(降順ならlatest)
                         ->whereNull('tasks.deleted_at')//whereNull...指定したカラムが「NULLではない」レコードを抽出
-                        ->get()
+                        ->get(),
                         /*
                             結合するテーブルに論理削除機能が設定されていないテーブルが含まれていると、
                             データ抽出時に論理削除されたレコードも取得してしまう。
@@ -66,6 +67,9 @@ class TaskListController extends Controller
                             なので、whereNull('tasks.deleted_at')を挟むことで、
                             tasksテーブルのdeleted_atカラムがnullではないレコード(=論理削除されていないレコード)だけが抽出されるようにする。
                         */
+                    
+            //コンポーネントのレンダリング時にはタグも渡すようにする
+            'tag' => Tag::where('user_id', $id)->get()
         ]);
     }
 }

@@ -111,6 +111,19 @@ export default function TaskPageLeftSide(props) {
                 </SecondaryButton>
             </div>
 
+            <ul className='mt-10'>
+                {props.tag.map((value, index) => { /*タグを表示していく*/
+                    return (
+                        <li 
+                            key={index} 
+                            className='my-8'
+                        >
+                            {value.tag}
+                        </li>
+                    );
+                })}
+            </ul>
+
             <div>
                 <SecondaryButton 
                     className='mt-4 mb-8 border-solid border-2 border-blue-500'
