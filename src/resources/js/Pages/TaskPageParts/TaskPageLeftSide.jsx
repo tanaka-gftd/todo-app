@@ -93,9 +93,12 @@ export default function TaskPageLeftSide(props) {
                             }} 
                             key={index} 
                             style={{fontWeight: props.clickedTaskListId === value.id ? 'bold' : 'normal'}}
-                            className='my-8 cursor-pointer'
+                            className='my-8 cursor-pointer flex items-center'
                         >
-                            {value.task_list_title}
+
+                            <svg xmlns="http://www.w3.org/2000/svg" height="0.75em" viewBox="0 0 512 512"><path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/>
+                            </svg>
+                            <p className='ml-2'>{value.task_list_title}</p>
                         </li>
                     );
                 })}
@@ -107,6 +110,10 @@ export default function TaskPageLeftSide(props) {
                     onClick={()=>openTaskListModal()}
                 >
                     <p className='text-xl text-blue-700 mt-1'>＋</p>
+                    <p className='ml-2 mr-1'>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/>
+                        </svg>
+                    </p>
                     <p className='text-xl text-blue-700 mt-1'>リストを追加</p>
                 </SecondaryButton>
             </div>
@@ -116,9 +123,11 @@ export default function TaskPageLeftSide(props) {
                     return (
                         <li 
                             key={index} 
-                            className='my-8'
+                            className='my-8 flex items-center'
                         >
-                            {value.tag}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="0.75em" viewBox="0 0 448 512"><path d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+                            </svg>
+                            <p className='ml-2'>{value.tag}</p>
                         </li>
                     );
                 })}
@@ -130,6 +139,9 @@ export default function TaskPageLeftSide(props) {
                     onClick={()=>openTagModal()}
                 >
                     <p className='text-xl text-blue-700 mt-1'>＋</p>
+                    <p className='mt-1 ml-2 mr-1'><svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 448 512"><path d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+                        </svg>
+                    </p>
                     <p className='text-xl text-blue-700 mt-1'>タグを追加</p>
                 </SecondaryButton>
             </div>
