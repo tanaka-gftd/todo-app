@@ -70,6 +70,7 @@ export default function Dashboard(props) {
                         <div className="p-8 mx-8 bg-red-100 shadow w-4/12">
                             <TaskPageCenter
                                 tasks={tasks}
+                                tag={tag}
                                 taskLists={taskLists}
                                 clickedTaskListId={clickedTaskListId}
                                 clickedTaskListTitle={clickedTaskListTitle}

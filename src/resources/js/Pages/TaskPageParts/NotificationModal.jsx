@@ -40,7 +40,7 @@ export default function NotificationModal(props) {
 
     //タスク期限通知用モーダルを閉じる
     const closeModal = () => {
-      props.setShowNotificationModalFlag(false);
+        props.setShowNotificationModalFlag(false);
     };
 
     return (

@@ -5,6 +5,7 @@ import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import { useForm } from '@inertiajs/react';
+import Checkbox from "@/Components/Checkbox";
 
 
 export default function TaskPageCenter(props) {
@@ -19,7 +20,8 @@ export default function TaskPageCenter(props) {
             priority: "0",  //優先度の初期値は0(優先度なし) *セレクトボックスのvalueにint型は設定できない？
             deadline: '',
             comment: '',
-            isDone: false  //初期値は未達成を示すfalse
+            isDone: false, //初期値は未達成を示すfalse
+            tagsArray: []
         });
 
          //タスク詳細設定用モーダルの表示フラグ
@@ -39,6 +41,21 @@ export default function TaskPageCenter(props) {
         //入力された内容や選ばれた内容を保持
         const handleOnChange = (e) => {
             setData(e.target.name, e.target.value);
+        };
+
+        //タグはチェックボックスで設定
+        const handleOnCheckbox = (e) => {
+            //チェックしたら追加、チェックを外したら削除
+            if(e.target.checked){
+                setData('tagsArray', [...data.tagsArray, e.target.value]);
+            } else {
+                setData(
+                    'tagsArray', 
+                    data.tagsArray.filter((item) => {
+                        return item !== e.target.value;
+                    })
+                );
+            }
         };
 
         //タスクを登録
@@ -167,6 +184,28 @@ export default function TaskPageCenter(props) {
                                 required
                             />
 
+                            <p className='mt-5 text-xl'>一つのタスクにタブは二つまで設定できます</p>
+                            <p className='text-xl'>（タグ設定なし可）</p>
+                            <div className='flex flex-wrap'>
+                                {props.tag.map((value, index) => { /*タグを選ぶチェックボックス表示していく*/
+                                    return (
+                                        <label className='flex items-center mr-10 mt-2' key={index}>
+                                            <Checkbox 
+                                                name='tagsArray' 
+                                                value={value.id} 
+                                                onChange={handleOnCheckbox}
+                                                className='mr-2'
+                                            />
+                                            <p className='mr-1'>
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+                                                </svg>
+                                            </p>
+                                            <p className='text-2xl'>{value.tag}</p>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                            
                             <div className="my-10 flex justify-end">
                                 <PrimaryButton className="w-48">
                                     <span className='text-lg m-auto leading-10' disabled={processing}>タスクを登録</span>
