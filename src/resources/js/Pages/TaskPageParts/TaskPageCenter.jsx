@@ -24,7 +24,7 @@ export default function TaskPageCenter(props) {
             tagsArray: []
         });
 
-        //タスクに設定できるタブの上限数
+        //タスクに設定できるタグの上限数
         const checkMax = 2;        
 
          //タスク詳細設定用モーダルの表示フラグ
@@ -194,7 +194,7 @@ export default function TaskPageCenter(props) {
                                 required
                             />
 
-                            <p className='mt-5 text-xl'>一つのタスクにタブは二つまで設定できます</p>
+                            <p className='mt-5 text-xl'>一つのタスクにタグは二つまで設定できます</p>
                             <p className='text-xl'>（タグ設定なし可）</p>
                             <div className='flex flex-wrap'>
                                 {props.tag.map((value, index) => { /*タグを選ぶチェックボックス表示していく*/
