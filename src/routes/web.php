@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     //タスクの削除
     Route::post('/api/tasklist/{id}/delete', [TaskController::class, 'delete'])->name('task.delete');
 
-    //タスクの登録
+    //タグの登録
     Route::post('/api/tag/create', [TagController::class, 'register'])->name('tag.register');
 });
 

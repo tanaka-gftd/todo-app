@@ -17,11 +17,10 @@ class TagController extends Controller
         ]);
 
 
-
         //tagテーブルに、レコード登録
         Tag::create([
           'user_id' => auth()->user()->id,
-          'tag' => $request->newTag,
+          'tag' => $request->newTag
       ]);
     }
 }
