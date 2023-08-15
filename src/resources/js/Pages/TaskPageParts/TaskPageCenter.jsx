@@ -24,6 +24,9 @@ export default function TaskPageCenter(props) {
             tagsArray: []
         });
 
+        //タスクに設定できるタブの上限数
+        const checkMax = 2;        
+
          //タスク詳細設定用モーダルの表示フラグ
         const [showTaskDetailModalFlag, setShowTaskDetailModalFlag] = useState(false);
 
@@ -34,7 +37,7 @@ export default function TaskPageCenter(props) {
 
         //タスク詳細設定用モーダルを閉じる
         const closeModal = () => {
-            reset('taskListId', 'taskName', 'priority', 'deadline', 'comment');
+            reset('taskListId', 'taskName', 'priority', 'deadline', 'comment', 'isDone', 'tagsArray');
             setShowTaskDetailModalFlag(false);
         };
 
@@ -45,10 +48,17 @@ export default function TaskPageCenter(props) {
 
         //タグはチェックボックスで設定
         const handleOnCheckbox = (e) => {
-            //チェックしたら追加、チェックを外したら削除
+
+            //チェックしたら追加
+            //ただし、チェックできるのは2個(変数checkMaxで設定)まで
             if(e.target.checked){
-                setData('tagsArray', [...data.tagsArray, e.target.value]);
+                if(checkMax > data.tagsArray.length){
+                    setData('tagsArray', [...data.tagsArray, e.target.value]);
+                } else {
+                    e.target.checked = false;  //チェックの上限数を超えていたら、チェックさせない
+                }
             } else {
+                //チェックを外したら削除
                 setData(
                     'tagsArray', 
                     data.tagsArray.filter((item) => {
