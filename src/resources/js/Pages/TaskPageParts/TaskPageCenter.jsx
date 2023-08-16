@@ -79,18 +79,20 @@ export default function TaskPageCenter(props) {
             });
         };
 
+
         //優先度表示用コンポーネントを作成、propsで優先度を表す数値を受け取っている
-        //switch構文によるレンダーは出来ないようなので、else ifで対処する
+        //switch構文で条件分岐してレンダーするので、returnでJSXを返す(breakではJSXを返せない)
         const PriorityColor = ({num}) => {
-            if(num === 3){
-                return (<p className='text-green-500'>優先度 低</p>)
-            } else if(num === 2){
-                return (<p className='text-yellow-600'>優先度 中</p>)
-            } else if(num === 1){
-                return (<p className='text-red-500'>優先度 高</p>)
-            } else {
-                return (<p>優先度 なし</p>)
-            }
+            switch(num){
+                case 3:
+                    return (<p className='text-green-500'>優先度 低</p>)
+                case 2:
+                    return (<p className='text-yellow-600'>優先度 中</p>)
+                case 1:
+                    return (<p className='text-red-500'>優先度 高</p>)
+                default:
+                    return (<p>優先度 なし</p>)
+            };
         };
 
 

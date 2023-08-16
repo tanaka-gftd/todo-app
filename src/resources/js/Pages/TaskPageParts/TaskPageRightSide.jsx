@@ -35,15 +35,16 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
 
     //優先度表示用
     const PriorityColor = ({num}) => {
-        if(num === 3){
-            return (<p className='text-3xl text-green-500 mt-2'>優先度 低</p>)
-        } else if(num === 2){
-            return (<p className='text-3xl text-yellow-600 mt-2'>優先度 中</p>)
-        } else if(num === 1){
-            return (<p className='text-3xl text-red-500 mt-2'>優先度 高</p>)
-        } else {
-            return (<p className='text-3xl mt-2'>優先度 なし</p>)
-        }
+        switch(num){
+            case 3:
+                return (<p className='text-3xl text-green-500 mt-2'>優先度 低</p>)
+            case 2:
+                return(<p className='text-3xl text-yellow-600 mt-2'>優先度 中</p>)
+            case 1:
+                return (<p className='text-3xl text-red-500 mt-2'>優先度 高</p>)
+            default:
+                return (<p className='text-3xl mt-2'>優先度 なし</p>)
+        };
     };
 
 
