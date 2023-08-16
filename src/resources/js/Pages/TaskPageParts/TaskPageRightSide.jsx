@@ -66,17 +66,28 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
         const millisecondDay = 1000*60*60*24;
 
         //期限が過ぎた、期限まで12時間を切った、期限まで24時間を切った、それ以外、４パターンで表示する警告を切り替える
-        //(switch構文ではレンダリング出来ない？ので、elseifで対応)
-        if(diff < 0){
-            return (<p className="text-xl mt-2 text-red-500">タスクの期限を過ぎています！!</p>)
-        } else if(diff <= millisecondDay*1/2){
-            return (<p className="text-xl mt-2 text-red-500">タスクの期限が迫っています！</p>)
-        } else if(diff <= millisecondDay){
-            return (<p className="text-xl mt-2 text-yellow-600">そろそろタスクの期限です</p>)
-        } else {
-            return null
-        }
+        /* 
+            switch文やループにおける、break,return,continueの違い
+                break...switch文やループからの脱出
+                return...switch文やループを内包する関数からの脱出
+                continue...ループを中断し、次の繰り返しからループを再開する(switch文では使用不可？)
+        
+            本関数コンポーネント(Deadlineコンポーネント)は、分岐条件をもとにJSXを返して終了なので、
+            returnでJSXを返して終わらせる。
+            (breakでは返り値を返せないので、今回の処理では使えない)
+        */
+        switch(true){
+            case diff < 0:
+                return (<p className="text-xl mt-2 text-red-500">タスクの期限を過ぎています！!</p>)
+            case diff <= millisecondDay*1/2:
+                return (<p className="text-xl mt-2 text-red-500">タスクの期限が迫っています！</p>)
+            case diff <= millisecondDay:
+                return (<p className="text-xl mt-2 text-yellow-600">そろそろタスクの期限です</p>)
+            default:
+                return
+        };
     };
+
 
     //タスク詳細エリアのタグアイコン表示用コンポーネント
     //表示するタグ名を、子コンポーネントとして挟み込んでいる
