@@ -126,10 +126,25 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
                                     <p className="text-3xl mt-2">{value.task_name}</p>
                                     <p className="text-2xl mt-12">タスクのコメント</p>
                                     <p className="text-3xl mt-2">{value.comment}</p>
-                                    <p className="text-2xl mt-12 mb-1">タグ1</p>
-                                    {value.tag_1?  <TagIcon><p>{value.tag_1}</p></TagIcon>:<p className='text-2xl'>設定無し</p>}
-                                    <p className="text-2xl mt-4 mb-1">タグ2</p>
-                                    {value.tag_2?  <TagIcon><p>{value.tag_2}</p></TagIcon>:<p className='text-2xl'>設定無し</p>}
+                                    <p className="text-2xl mt-12">タグ</p>
+                                    <div className='mt-1'>
+                                        {value.tag_1? 
+                                            <TagIcon>
+                                                <p>{value.tag_1}</p>
+                                            </TagIcon>
+                                            :
+                                            <p className='text-2xl'>設定無し</p>
+                                        }
+                                    </div>
+                                    <div className='mt-1'>
+                                        {value.tag_2? 
+                                            <TagIcon>
+                                                <p>{value.tag_2}</p>
+                                            </TagIcon>
+                                            :
+                                            null
+                                        }
+                                    </div>
                                     <p className="text-2xl mt-12">タスクの期限</p>
                                     <p className="text-3xl mt-2">{date.toLocaleString()}</p>
                                     <Deadline date={date} isDone={value.is_done}/>
