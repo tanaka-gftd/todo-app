@@ -43,7 +43,7 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
             case 1:
                 return (<p className='text-3xl text-red-500 mt-2'>優先度 高</p>)
             default:
-                return (<p className='text-3xl mt-2'>優先度 なし</p>)
+                return (<p className='text-3xl mt-2'>優先度 設定なし</p>)
         };
     };
 

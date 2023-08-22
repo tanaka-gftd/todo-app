@@ -43,6 +43,21 @@ export default function NotificationModal(props) {
         props.setShowNotificationModalFlag(false);
     };
 
+    //優先度表示用
+    const Priority = ({num}) => {
+        switch(num){
+            case 3:
+                return (<p className='text-xl ml-10 mb-4'>優先度 低</p>)
+            case 2:
+                return(<p className='text-xl ml-10 mb-4'>優先度 中</p>)
+            case 1:
+                return (<p className='text-xl ml-10 mb-4'>優先度 高</p>)
+            default:
+                return (<p className='text-xl ml-10 mb-4'>優先度 設定なし</p>)
+        };
+    };
+
+
     return (
         <Modal show={props.showNotificationModalFlag} addStyle={'h-3/6'} onClose={closeModal}>
             <div className='mx-20 my-10'>
@@ -56,7 +71,7 @@ export default function NotificationModal(props) {
                 <div className="text-2xl">
                     <p className="mb-8 text-2xl">タスクの期限についての通知があります</p>
                     <div style={{display: over.length === 0 ? 'none' : ''}}>
-                        <p className='mt-4'>期限を過ぎたタスク</p>
+                        <p className='mt-4 text-red-500'>期限を過ぎたタスク</p>
                         <ul className='border-b-2 border-neutral-400'>
                             {over.map((value, index)=>{
                                 return (
@@ -64,34 +79,43 @@ export default function NotificationModal(props) {
                                         <p className="text-xl ml-4">リスト名：{value.task_list_title}</p>
                                         <p className="text-xl ml-10">タスク名：{value.task_name} </p>
                                         <p className="text-xl ml-10">期限：{value.deadline} </p>
+                                        <Priority num={value.priority}/>
                                     </li>
                                 );
                             })}
                         </ul>
                     </div>
                     <div style={{display: justBefore.length === 0 ? 'none' : ''}}>
-                        <p className='mt-4'>期限直前のタスク（期限まで12時間以下）</p>
+                        <div className="mt-4 flex items-center">
+                            <p className='text-red-500'>期限直前のタスク</p>
+                            <p>（期限まで12時間以下）</p>
+                        </div>
                         <ul className='border-b-2 border-neutral-400'>
                             {justBefore.map((value, index)=>{
                                 return (
                                     <li key={index} className='mt-2'>
                                         <p className="text-xl ml-4">リスト名：{value.task_list_title}</p>
                                         <p className="text-xl ml-10">タスク名：{value.task_name} </p>
-                                        <p className="text-xl ml-10">期限：{value.deadline} </p>
+                                        <p className="text-xl ml-10">期限：{value.deadline}</p>
+                                        <Priority num={value.priority}/>
                                     </li>
                                 );
                             })}
                         </ul>
                     </div>
                     <div style={{display: soon.length === 0 ? 'none' : ''}}>
-                        <p className='mt-4'>そろそろ期限のタスク（期限まで24時間以下）</p>
+                        <div className="mt-4 flex items-center">
+                            <p className='text-yellow-600'>そろそろ期限のタスク</p>
+                            <p>（期限まで24時間以下）</p>
+                        </div>
                         <ul className='border-b-2 border-neutral-400'>
                             {soon.map((value, index)=>{
                                 return (
                                     <li key={index} className='mt-2'>
                                         <p className="text-xl ml-4">リスト名：{value.task_list_title}</p>
                                         <p className="text-xl ml-10">タスク名：{value.task_name} </p>
-                                        <p className="text-xl ml-10">期限：{value.deadline} </p>
+                                        <p className="text-xl ml-10">期限：{value.deadline}</p>
+                                        <Priority num={value.priority}/>
                                     </li>
                                 );
                             })}

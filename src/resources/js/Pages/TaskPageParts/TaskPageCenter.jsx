@@ -91,7 +91,7 @@ export default function TaskPageCenter(props) {
                 case 1:
                     return (<p className='text-red-500'>優先度 高</p>)
                 default:
-                    return (<p>優先度 なし</p>)
+                    return (<p>優先度 設定なし</p>)
             };
         };
 
@@ -217,7 +217,7 @@ export default function TaskPageCenter(props) {
                                     onChange={handleOnChange} 
                                     required
                                 >
-                                    <option value="0">なし</option>
+                                    <option value="0">設定しない</option>
                                     <option value="1">高</option>
                                     <option value="2">中</option>
                                     <option value="3">低</option>
