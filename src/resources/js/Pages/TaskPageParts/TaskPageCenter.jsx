@@ -1,6 +1,6 @@
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
@@ -121,6 +121,30 @@ export default function TaskPageCenter(props) {
             };
         });
 
+        //画面に表示するタスクを保存する配列を、stateとして準備
+        const [viewTasks, setViewTasks] = useState([]);
+
+        //親コンポーネントから受け取ったprops.showTaskの値に応じて、表示する配列の中身を切り替える
+        //初回レンダリング時と、props.showTaskの値が更新された時に呼び出される
+        useEffect(() => {
+            switch(props.showTask){
+                case 0:
+                    //すべてのタスク
+                    setViewTasks([...props.tasks]);  
+                break;
+                case 1:
+                    //期限が今日までのタスク
+                    setViewTasks([...props.todayTask]);  
+                break;
+                case 2:
+                    //期限が、今日を含めて1週間以内のタスク
+                    setViewTasks([... props.weekTask]);  
+                break;
+                default:
+                break;
+            };
+        },[props.showTask]);
+
 
         return (
             <>
@@ -139,7 +163,7 @@ export default function TaskPageCenter(props) {
                 <p className='text-2xl mt-10 border-b-2 border-neutral-400'>タスク一覧</p>
 
                 <ul className='mt-2'>
-                    {props.tasks.map((value, index) => {
+                    {viewTasks.map((value, index) => {
                         //表示するタスクは、左エリアでクリックされたタスクリストのIDと一致しているものだけとする
                         if(value.task_list_id === props.clickedTaskListId){
                             return (
