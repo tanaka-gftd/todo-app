@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import TaskPageLeftSide from './TaskPageParts/TaskPageLeftSide';
 import TaskPageRightSide from './TaskPageParts/TaskPageRightSide';
 import TaskPageCenter from './TaskPageParts/TaskPageCenter';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Loading from '@/Components/Loading';
 import NotificationModal from './TaskPageParts/NotificationModal';
 
@@ -33,6 +33,12 @@ export default function Dashboard(props) {
 
     //タスクの期限が迫っていることを知らせる通知用モーダルの表示フラグ(初期値はtrueで表示)
     const [showNotificationModalFlag, setShowNotificationModalFlag] = useState(true);
+
+    //期限が今日までのタスクを格納する配列
+    const todayTask = [];
+
+    //期限が1週間以内のタスクを格納する配列
+    const weekTask = [];
 
 
     /* 
@@ -77,6 +83,8 @@ export default function Dashboard(props) {
                                 setClickedTaskId={setClickedTaskId}
                                 setIsLoading={setIsLoading}
                                 clickedTaskId={clickedTaskId}
+                                todayTask={todayTask}
+                                weekTask={weekTask}
                             />
                         </div>
     

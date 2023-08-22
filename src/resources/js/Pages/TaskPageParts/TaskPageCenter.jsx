@@ -96,6 +96,32 @@ export default function TaskPageCenter(props) {
         };
 
 
+        //現在の日付を取得
+        const date = new Date();
+        const today = date.toLocaleDateString();
+
+        //1週間後の日付を取得
+        const date_2 = new Date();
+        date_2.setDate(date_2.getDate() + 7);
+        const oneWeekLater = date_2.toLocaleDateString();
+        
+        //期限が今日までのタスク、1週間以内のタスクを、それぞれ配列に記録
+        props.tasks.forEach((value) => {
+            const deadline = new Date(value.deadline);
+            const deadlineFormat = deadline.toLocaleDateString();
+            
+            //期限が今日まで
+            if(deadlineFormat === today){
+                props.todayTask.push(value);
+            };
+
+            //期限が今日を含めて1週間以内
+            if((today <= deadlineFormat)&&(deadlineFormat <= oneWeekLater)){
+                props.weekTask.push(value);
+            };
+        });
+
+
         return (
             <>
                 <p className='text-2xl mt-4'>タスクリスト名</p>
