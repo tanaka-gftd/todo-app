@@ -46,9 +46,13 @@ export default function NotificationModal(props) {
     return (
         <Modal show={props.showNotificationModalFlag} addStyle={'h-3/6'} onClose={closeModal}>
             <div className='mx-20 my-10'>
-                <p onClick={()=>closeModal()} className="cursor-pointer absolute top-5 right-5 text-4xl">
+                <button 
+                    type="button"
+                    onClick={()=>closeModal()} 
+                    className="cursor-pointer absolute top-5 right-5 text-4xl outline-none"
+                >
                     ×
-                </p>
+                </button>
                 <div className="text-2xl">
                     <p className="mb-8 text-2xl">タスクの期限についての通知があります</p>
                     <div style={{display: over.length === 0 ? 'none' : ''}}>
