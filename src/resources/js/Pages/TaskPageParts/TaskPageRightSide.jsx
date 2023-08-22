@@ -129,21 +129,13 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
                                     <p className="text-2xl mt-12">タグ</p>
                                     <div className='mt-1'>
                                         {value.tag_1? 
-                                            <TagIcon>
-                                                <p>{value.tag_1}</p>
-                                            </TagIcon>
+                                            <TagIcon>{value.tag_1}</TagIcon>
                                             :
                                             <p className='text-2xl'>設定無し</p>
                                         }
                                     </div>
                                     <div className='mt-1'>
-                                        {value.tag_2? 
-                                            <TagIcon>
-                                                <p>{value.tag_2}</p>
-                                            </TagIcon>
-                                            :
-                                            null
-                                        }
+                                        {value.tag_2? <TagIcon>{value.tag_2}</TagIcon> : null}
                                     </div>
                                     <p className="text-2xl mt-12">タスクの期限</p>
                                     <p className="text-3xl mt-2">{date.toLocaleString()}</p>
