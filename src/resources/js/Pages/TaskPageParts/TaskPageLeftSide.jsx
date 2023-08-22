@@ -77,9 +77,27 @@ export default function TaskPageLeftSide(props) {
     return (
         <div className='text-2xl'>
             <div className='mb-8'>
-                <p className='py-4'>すべて</p>
-                <p className='py-4'>今日</p>
-                <p className='py-4'>次の7日間</p>
+                <p 
+                    className='py-4 cursor-pointer' 
+                    onClick={()=>props.setShowTask(0)}
+                    style={{fontWeight: props.showTask === 0 ? 'bold' : 'normal'}}
+                >
+                    すべて
+                </p>
+                <p 
+                    className='py-4 cursor-pointer' 
+                    onClick={()=>props.setShowTask(1)}
+                    style={{fontWeight: props.showTask === 1 ? 'bold' : 'normal'}}
+                >
+                    今日
+                </p>
+                <p 
+                    className='py-4 cursor-pointer' 
+                    onClick={()=>props.setShowTask(2)}
+                    style={{fontWeight: props.showTask === 2 ? 'bold' : 'normal'}}
+                >
+                    次の7日間
+                </p>
             </div>
 
             <ul className='mt-28'>

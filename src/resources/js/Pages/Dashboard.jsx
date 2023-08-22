@@ -34,6 +34,9 @@ export default function Dashboard(props) {
     //タスクの期限が迫っていることを知らせる通知用モーダルの表示フラグ(初期値はtrueで表示)
     const [showNotificationModalFlag, setShowNotificationModalFlag] = useState(true);
 
+    //期限に合わせてタスクの表示を切り替えるフラグ 0で全て、1で今日、2で次の7日間(初期値は0で全て表示)
+    const [showTask, setShowTask] = useState(0);
+
     //期限が今日までのタスクを格納する配列
     const todayTask = [];
 
@@ -70,6 +73,8 @@ export default function Dashboard(props) {
                                 setClickedTaskListId={setClickedTaskListId}
                                 setClickedTaskListTitle={setClickedTaskListTitle}
                                 setIsLoading={setIsLoading}
+                                showTask={showTask}
+                                setShowTask={setShowTask}
                             />
                         </div>
     
