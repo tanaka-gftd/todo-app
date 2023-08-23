@@ -244,6 +244,7 @@ export default function TaskPageCenter(props) {
                                 className="text-2xl w-full leading-5 py-4 my-5"
                                 placeholder="コメント"
                                 onChange={handleOnChange}
+                                maxLength="100"
                                 required
                             />
 
