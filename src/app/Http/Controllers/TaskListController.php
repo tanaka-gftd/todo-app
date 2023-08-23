@@ -16,7 +16,7 @@ class TaskListController extends Controller
     {
         //入力された文字列のチェック
         $request->validate([
-            'newTaskListTitle' => 'required|string|max:255'
+            'newTaskListTitle' => 'required|string|max:16'
         ]);
 
         /*

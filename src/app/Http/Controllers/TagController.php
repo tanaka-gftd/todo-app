@@ -13,7 +13,7 @@ class TagController extends Controller
     {
         //入力された文字列のチェック
         $request->validate([
-          'newTag' => 'required|string|max:20'
+          'newTag' => 'required|string|max:16'
         ]);
 
 

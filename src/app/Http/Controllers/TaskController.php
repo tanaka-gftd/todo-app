@@ -13,10 +13,10 @@ class TaskController extends Controller
     {
         //入力された文字列のチェック
         $request->validate([
-            'taskName' => 'required|string|max:255',
+            'taskName' => 'required|string|max:16',
             'comment' => 'required|string|max:255',
             'tagsArray' => 'array',
-            'tagsArray.*' => 'string|max:255'
+            'tagsArray.*' => 'string|max:16'
         ]);
 
         //フロントから送られてきたタグを保管する変数を用意
