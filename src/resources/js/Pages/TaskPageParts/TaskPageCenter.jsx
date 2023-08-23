@@ -198,7 +198,7 @@ export default function TaskPageCenter(props) {
                 <Modal show={showTaskDetailModalFlag} onClose={closeModal}>
                     <div className='mx-20 my-10'>
                         <form onSubmit={submit}>
-                            <InputLabel htmlFor="taskName" value="taskName" className="sr-only" />
+                            <InputLabel htmlFor="taskName" value="taskName" className="sr-only"/>
                             <TextInput
                                 id="taskName"
                                 type="text"
@@ -210,8 +210,8 @@ export default function TaskPageCenter(props) {
                                 required
                             />
 
-                            <div className="flex justify-left items-center mt-5">
-                                <InputLabel  htmlFor="priority" value="優先度" className="text-xl mr-10"/>
+                            <div className="flex justify-left items-center my-5">
+                                <InputLabel htmlFor="priority" value="優先度" className="text-xl mr-10"/>
                                 <select 
                                     name="priority" 
                                     className="text-xl" 
@@ -225,8 +225,8 @@ export default function TaskPageCenter(props) {
                                 </select>
                             </div>
 
-                            <div className="flex justify-left items-center mt-10 mb-20">
-                                <InputLabel  htmlFor="deadline" value="期限" className="text-xl mr-10"/>
+                            <div className="flex justify-left items-center mt-10 mb-5">
+                                <InputLabel htmlFor="deadline" value="期限" className="text-xl mr-10"/>
                                 <input 
                                     name="deadline" 
                                     type="datetime-local" /* datetime-localのタイムゾーンは、ユーザーのローカル*/
@@ -236,15 +236,15 @@ export default function TaskPageCenter(props) {
                                 />
                             </div>
 
-                            <InputLabel htmlFor="comment" value="comment" className="sr-only" />
-                            <TextInput
+                            <InputLabel htmlFor="comment" value="comment" className="sr-only"/>
+                            <textarea
                                 id="comment"
                                 type="text"
                                 name="comment"
-                                className="text-2xl w-full leading-5 py-4 my-5"
-                                placeholder="コメント"
+                                className="text-2xl w-full leading-8 py-4 my-5"
+                                placeholder="タスクについてのコメント（255文字まで）"
                                 onChange={handleOnChange}
-                                maxLength="100"
+                                maxLength="255"
                                 required
                             />
 
@@ -270,7 +270,7 @@ export default function TaskPageCenter(props) {
                                 })}
                             </div>
                             
-                            <div className="my-10 flex justify-end">
+                            <div className="mt-10 mb-5 flex justify-end">
                                 <PrimaryButton className="w-48">
                                     <span className='text-lg m-auto leading-10' disabled={processing}>タスクを登録</span>
                                 </PrimaryButton>

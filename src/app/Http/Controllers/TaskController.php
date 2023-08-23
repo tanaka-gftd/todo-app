@@ -14,7 +14,7 @@ class TaskController extends Controller
         //入力された文字列のチェック
         $request->validate([
             'taskName' => 'required|string|max:16',
-            'comment' => 'required|string|max:100',
+            'comment' => 'required|string|max:255',
             'tagsArray' => 'array',
             'tagsArray.*' => 'string|max:16'
         ]);
