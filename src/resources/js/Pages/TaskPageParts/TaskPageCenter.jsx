@@ -206,6 +206,7 @@ export default function TaskPageCenter(props) {
                                 className="text-2xl w-full leading-5 py-4 my-5"
                                 placeholder="タスクを追加"
                                 onChange={handleOnChange}
+                                maxLength="16"
                                 required
                             />
 

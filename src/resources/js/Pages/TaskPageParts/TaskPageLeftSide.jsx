@@ -177,6 +177,7 @@ export default function TaskPageLeftSide(props) {
                                 isFocused
                                 placeholder="新規のリスト名"
                                 onChange={handleOnChange}
+                                maxLength="16"
                                 required
                             />
                         </div>
@@ -206,6 +207,7 @@ export default function TaskPageLeftSide(props) {
                                 isFocused
                                 placeholder="新規のタグ"
                                 onChange={handleOnChange}
+                                maxLength="16"
                                 required
                             />
                         </div>
