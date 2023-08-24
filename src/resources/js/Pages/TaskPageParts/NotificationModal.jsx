@@ -1,5 +1,4 @@
 import Modal from "@/Components/Modal";
-import { useEffect } from "react";
 
 
 //タスクの期限通知用モーダル
@@ -34,17 +33,10 @@ export default function NotificationModal(props) {
         };
     });
 
-    //Dashboardコンポーネントのレンダリングが終わってから、タスク通知モーダルの表示非表示を設定
-    /* 
-        コンポーネントのレンダリング中に、他のコンポーネントのstateは更新できないので、
-        レンダリングが終わってからstateの更新を行うようにする。
-    */
-    useEffect(()=>{
-        //期限が過ぎたタスクや期限が迫っているタスクがないなら、通知モーダルを表示しないようにする
-        if((over.length === 0)&&(justBefore.length === 0)&&(soon.length === 0)){
-            props.setShowNotificationModalFlag(false);
-        };
-    },[]);
+    //期限が過ぎたタスクや期限が迫っているタスクがないなら、通知モーダルを表示しないようにする
+    if((over.length === 0)&&(justBefore.length === 0)&&(soon.length === 0)){
+        props.setShowNotificationModalFlag(false);
+    };
 
     //タスク期限通知用モーダルを閉じる
     const closeModal = () => {
