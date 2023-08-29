@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import TaskPageLeftSide from './TaskPageParts/TaskPageLeftSide';
 import TaskPageRightSide from './TaskPageParts/TaskPageRightSide';
 import TaskPageCenter from './TaskPageParts/TaskPageCenter';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Loading from '@/Components/Loading';
 import NotificationModal from './TaskPageParts/NotificationModal';
 
