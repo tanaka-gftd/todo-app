@@ -1,12 +1,61 @@
 import Dropdown from '@/Components/Dropdown';
 import TextInput from '@/Components/TextInput';
-import { usePage } from '@inertiajs/react';
+import { usePage, useForm } from '@inertiajs/react';
 import ButtonWithoutButtonTag from '@/Components/ButtonWithoutButtonTag';
+import { useEffect, useState, createContext} from 'react';
+
+//タスクの検索結果を渡すためのコンテキスト
+export const SearchedTaskContext = createContext();
 
 export default function Authenticated({ auth, header, children }) {
     const { url } = usePage();
 
     const dropDawnTextStyle = 'underline underline-offset-8 decoration-blue-400 text-xl text-blue-700 hover:text-gray-700 hover:decoration-gray-400'
+
+    //タスク検索フォーム用
+    const { data, setData, post, processing, reset } = useForm({
+        taskSearch:'',
+    });
+
+    //タスク検索フォームに入力された内容を保持
+    const handleOnChange = (e) => {
+        setData('taskSearch', e.target.value);
+    };
+
+    /* 
+        DBからタスクのデータを貰っているのはDashboardコンポーネント。
+        Dashboardコンポーネントは本コンポーネントの子コンポーネントになるので、
+        レンダリング時に、childrenプロパティを介してDashboardコンポーネントから、タスクのデータを貰う。
+        また、Dashboardコンポーネントが保有しているタスクのデータが更新されたら、
+        本コンポーネントが持つタスクのデータも更新する。
+
+        かなり強引な手法と思われる。
+        本来なら、useContextやreduxで、全てのコンポーネントでタスクのデータを共有するのが正しいやり方。
+    */
+    const [taskFromChildren, setTaskFromChildren] = useState([]);
+
+    if(url === '/api/tasklist'){
+        useEffect(()=>{
+            if(children[2].props.tasks.length===0){
+                console.log('タスクが登録されていません')
+            } else {
+                setTaskFromChildren(children[2].props.tasks);
+            }
+        },[children[2].props.tasks]);
+    };
+
+    //検索文字列がタスク名に含まれているタスクのデータを保存
+    const [searchedTask, setSearchedTask] = useState([]);
+
+    //入力された文字をもとに、タスク名を検索して保存
+    const tmp = [];
+    const taskSearch = () => taskFromChildren.map((value) => {
+        if(data.taskSearch!=='' && value.task_name.includes(data.taskSearch)){
+            tmp.push(value);
+        };
+        setSearchedTask([...tmp]);
+    });
+
     
     return (
         <div className="min-h-screen bg-gray-100">
@@ -15,8 +64,15 @@ export default function Authenticated({ auth, header, children }) {
                     <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <span className="text-7xl text-white" style={{fontFamily:'Rammetto One'}}>My TODO</span>
                     </div>
-                    <div className="bg-white flex relative rounded-lg w-1/4">
-                        <div className='z-10 absolute top-3 left-3'>
+                    <div 
+                        className={
+                            url === '/api/tasklist' ? 'bg-white flex relative rounded-lg w-1/4' : 'hidden'
+                        }
+                    >
+                        <div 
+                            className='z-10 absolute top-3 left-3 cursor-pointer' 
+                            onClick={()=>taskSearch()}
+                        >
                             <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
                                 height="1.5em" 
@@ -25,10 +81,14 @@ export default function Authenticated({ auth, header, children }) {
                                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                             </svg>
                         </div>
-                        <div className={url === '/api/tasklist' ? 'w-full' : 'hidden'}>
+                        <div className='w-full'>
                             <TextInput
-                                placeholder="テキストを追加"
+                                placeholder="タスク名を検索"
                                 className="rounded-lg border-none pl-12 text-2xl leading-8 w-full"
+                                onChange={handleOnChange}
+                                id="taskSearch"
+                                type="text"
+                                name="taskSearch"
                             />
                         </div>
                     </div>
@@ -76,7 +136,11 @@ export default function Authenticated({ auth, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                <SearchedTaskContext.Provider value={searchedTask}>
+                    {children}
+                </SearchedTaskContext.Provider>
+            </main>
         </div>
     );
 }

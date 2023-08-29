@@ -1,14 +1,81 @@
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import { useForm } from '@inertiajs/react';
 import Checkbox from "@/Components/Checkbox";
+import { SearchedTaskContext } from '@/Layouts/AuthenticatedLayout'
 
 
 export default function TaskPageCenter(props) {
+
+    //タスクの検索結果をコンテキストから受け取る
+    const searchedTask = useContext(SearchedTaskContext);
+
+
+    //優先度表示用コンポーネントを作成、propsで優先度を表す数値を受け取っている
+    //switch構文で条件分岐してレンダーするので、returnでJSXを返す(breakではJSXを返せない)
+    const PriorityColor = ({num}) => {
+        switch(num){
+            case 3:
+                return (<p className='text-green-500'>優先度 低</p>)
+            case 2:
+                return (<p className='text-yellow-600'>優先度 中</p>)
+            case 1:
+                return (<p className='text-red-500'>優先度 高</p>)
+            default:
+                return (<p>優先度 設定なし</p>)
+        };
+    };
+
+
+    const ShowSearchedTask = () => {
+        return(
+            <>
+                <div className="flex justify-between mb-10">
+                    <p className='text-3xl mt-2'>検索結果</p>
+                </div>
+
+                <p className='text-2xl mt-10 border-b-2 border-neutral-400'>タスク一覧</p>
+
+                <ul className='mt-2'>
+                    {searchedTask.map((value, index) => {
+                        return (
+                            <li 
+                                key={index} 
+                                className='border-b-2 border-neutral-400 mt-4'
+                                onClick={()=>{
+                                    props.setClickedTaskId(value.task_id);
+                                    props.setClickedTaskListId(value.task_list_id);
+                                }} 
+                            >
+                                <div className="flex items-center">
+                                    <p>
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 448 512"><path d="M364.2 83.8c-24.4-24.4-64-24.4-88.4 0l-184 184c-42.1 42.1-42.1 110.3 0 152.4s110.3 42.1 152.4 0l152-152c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-152 152c-64 64-167.6 64-231.6 0s-64-167.6 0-231.6l184-184c46.3-46.3 121.3-46.3 167.6 0s46.3 121.3 0 167.6l-176 176c-28.6 28.6-75 28.6-103.6 0s-28.6-75 0-103.6l144-144c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-144 144c-6.7 6.7-6.7 17.7 0 24.4s17.7 6.7 24.4 0l176-176c24.4-24.4 24.4-64 0-88.4z"/></svg>
+                                    </p>
+                                    <p 
+                                        className="text-3xl cursor-pointer ml-2"
+                                        style={{fontWeight: props.clickedTaskId === value.task_id ? 'bold' : 'normal'}}
+                                    >
+                                        {value.task_name}
+                                    </p>
+                                </div>
+                                
+                                <div className="flex my-2 text-2xl">
+                                    <p className="mr-4">期限</p>
+                                    <p className='mr-12'>{value.deadline}</p>
+                                    <PriorityColor num={value.priority}/>
+                                </div>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </>
+        );
+    };
+
 
     //タスクリストをクリックした後に表示
     const ClickedTaskList = () => {
@@ -78,23 +145,6 @@ export default function TaskPageCenter(props) {
                 onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
             });
         };
-
-
-        //優先度表示用コンポーネントを作成、propsで優先度を表す数値を受け取っている
-        //switch構文で条件分岐してレンダーするので、returnでJSXを返す(breakではJSXを返せない)
-        const PriorityColor = ({num}) => {
-            switch(num){
-                case 3:
-                    return (<p className='text-green-500'>優先度 低</p>)
-                case 2:
-                    return (<p className='text-yellow-600'>優先度 中</p>)
-                case 1:
-                    return (<p className='text-red-500'>優先度 高</p>)
-                default:
-                    return (<p>優先度 設定なし</p>)
-            };
-        };
-
 
         //現在の日付を取得
         const date = new Date();
@@ -303,10 +353,14 @@ export default function TaskPageCenter(props) {
     };
 
 
-    //ページ左側のタスクリストをクリックしたかどうかで、表示を切り替える
+    //検索済みタスクがあるかどうか、ページ左側のタスクリストをクリックしたかどうかで、表示を切り替える
     return (
         <>
-            {props.clickedTaskListId ? (<ClickedTaskList/>) : (<UnsetTaskList/>)}
+            {searchedTask.length !== 0 ? 
+                (<ShowSearchedTask/>) 
+                : 
+                props.clickedTaskListId ? (<ClickedTaskList/>) : (<UnsetTaskList/>)
+            }
         </>
     );
 }

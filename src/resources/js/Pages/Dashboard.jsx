@@ -91,6 +91,7 @@ export default function Dashboard(props) {
                                 todayTask={todayTask}
                                 weekTask={weekTask}
                                 showTask={showTask}
+                                setClickedTaskListId={setClickedTaskListId}
                             />
                         </div>
     
