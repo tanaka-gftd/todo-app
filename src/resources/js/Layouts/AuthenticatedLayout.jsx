@@ -56,6 +56,13 @@ export default function Authenticated({ auth, header, children }) {
         setSearchedTask([...tmp]);
     });
 
+    //Enterキー(macならreturnキー)押下でも、検索出来るようにした
+    const pressEnter = (e) => {
+        if(e.key==='Enter'){
+            taskSearch();
+        };
+    };
+
     
     return (
         <div className="min-h-screen bg-gray-100">
@@ -89,6 +96,7 @@ export default function Authenticated({ auth, header, children }) {
                                 id="taskSearch"
                                 type="text"
                                 name="taskSearch"
+                                onKeyPress={pressEnter}
                             />
                         </div>
                     </div>
