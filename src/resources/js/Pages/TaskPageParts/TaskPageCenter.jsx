@@ -6,7 +6,8 @@ import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import { useForm } from '@inertiajs/react';
 import Checkbox from "@/Components/Checkbox";
-import { SearchedTaskContext } from '@/Layouts/AuthenticatedLayout'
+import { SearchedTaskContext } from '@/Layouts/AuthenticatedLayout';
+import DangerButton from '@/Components/DangerButton';
 
 
 export default function TaskPageCenter(props) {
@@ -199,15 +200,21 @@ export default function TaskPageCenter(props) {
         return (
             <>
                 <p className='text-2xl mt-4'>タスクリスト名</p>
-                <div className="flex justify-between mb-10">
-                    <p className='text-3xl mt-2'>{props.clickedTaskListTitle}</p>
+                <p className='text-3xl mt-2 mb-10'>{props.clickedTaskListTitle}</p>
+                
+                <div className='flex justify-between'>
                     <SecondaryButton 
-                        className='border-solid border-2 border-blue-500'
-                        onClick={()=>showTaskDetailModal()}
+                            className='border-solid border-2 border-blue-500'
+                            onClick={()=>showTaskDetailModal()}
                     >
-                        <p className='text-xl text-blue-700 mt-1'>＋</p>
-                        <p className='text-xl text-blue-700 mt-1'>タスクを追加</p>
+                            <p className='text-lg text-blue-700 mt-1'>＋</p>
+                            <p className='text-lg text-blue-700 mt-1'>タスクを追加</p>
                     </SecondaryButton>
+                    <DangerButton 
+                        className='border-solid border-2 border-blue-500'
+                    >
+                        <p className='text-lg mt-1'>このタスクリストを削除する</p>
+                    </DangerButton>
                 </div>
 
                 <p className='text-2xl mt-10 border-b-2 border-neutral-400'>タスク一覧</p>
