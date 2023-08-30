@@ -298,8 +298,29 @@ export default function TaskPageCenter(props) {
                                 required
                             />
 
-                            <p className='mt-5 text-xl'>一つのタスクにタグは二つまで設定できます</p>
-                            <p className='text-xl'>（タグ設定なし可）</p>
+                            {props.tag.length === 0? 
+                                (
+                                    <>
+                                        <p className='mt-5 text-xl'>タグは作成されていません</p>
+                                        <p className='text-xl'>（タグを設定しなくても、タスクは登録できます）</p>
+                                    </>
+                                )
+                                :
+                                props.tag.length === 1?
+                                    (
+                                        <>
+                                            <p className='mt-5 text-xl'>タグを設定する</p>
+                                            <p className='text-xl'>（タグを設定しなくても、タスクは登録できます）</p>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <p className='mt-5 text-xl'>一つのタスクにタグは二つまで設定できます</p>
+                                            <p className='text-xl'>（タグを設定しなくても、タスクは登録できます）</p>
+                                        </>
+                                    )
+                            }
                             <div className='flex flex-wrap'>
                                 {props.tag.map((value, index) => { /*タグを選ぶチェックボックス表示していく*/
                                     return (
