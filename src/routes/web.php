@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
     //タスクリストの名前登録
     Route::post('/api/tasklist/create', [TaskListController::class, 'register'])->name('tasklist.register');
 
+    //タスクリストの削除
+    Route::post('/api/tasklist/delete', [TaskListController::class, 'delete'])->name('tasklist.delete');
+
     //タスクの登録
     Route::post('/api/tasklist/{id}/create', [TaskController::class, 'register'])->name('task.register');
 

@@ -96,4 +96,12 @@ class TaskListController extends Controller
             'tag' => Tag::where('user_id', $id)->get()
         ]);
     }
+
+
+    //タスクリストを削除(論理削除)
+    public function delete(Request $request): void
+    {
+        $deleteTaskListId = $request->deleteTaskListId;
+        TaskList::find($deleteTaskListId)->delete();
+    }
 }

@@ -82,6 +82,7 @@ export default function TaskPageCenter(props) {
     const ClickedTaskList = () => {
 
         //タスク詳細設定フォーム用
+        //削除するタスクリストのIDも保持する
         const { data, setData, post, processing, reset } = useForm({
             taskListId: props.clickedTaskListId,  //選択されたタスクリストのID
             taskName: '',
@@ -89,13 +90,14 @@ export default function TaskPageCenter(props) {
             deadline: '',
             comment: '',
             isDone: false, //初期値は未達成を示すfalse
-            tagsArray: []
+            tagsArray: [],
+            deleteTaskListId: props.clickedTaskListId,  //タスクリストを削除する時に使用
         });
 
         //タスクに設定できるタグの上限数
         const checkMax = 2;        
 
-         //タスク詳細設定用モーダルの表示フラグ
+        //タスク詳細設定用モーダルの表示フラグ
         const [showTaskDetailModalFlag, setShowTaskDetailModalFlag] = useState(false);
 
         //タスク詳細設定用モーダルを表示する
@@ -196,6 +198,31 @@ export default function TaskPageCenter(props) {
             };
         },[props.showTask]);
 
+        //タスクリスト削除用モーダルの表示フラグ
+        const [deleteTaskListModalFlag, setDeleteTaskListModalFlag] = useState(false);
+
+        //タスクリスト削除用モーダルを表示する
+        const showDeleteTaskListModal = () => {
+            setDeleteTaskListModalFlag(true);
+        };
+
+        //タスクリスト削除用モーダルを閉じる
+        const closeDeleteTaskListModal = () => {
+            setDeleteTaskListModalFlag(false);
+        };
+
+        //削除するタスクリストのIDをバックエンドに送信
+        const submitDeleteTaskList = (e) => {
+            e.preventDefault();
+            //削除するタスクリストのIDをURLパラメータとして送信
+            post(route('tasklist.delete', data.deleteTaskListId), {
+                onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+                onError: (errors) => {console.error(errors)},
+                onFinish: () => props.setIsLoading(false)  //ダッシュボード画面に切り替え
+            });
+            props.setClickedTaskListId(null);
+        };
+
 
         return (
             <>
@@ -212,6 +239,7 @@ export default function TaskPageCenter(props) {
                     </SecondaryButton>
                     <DangerButton 
                         className='border-solid border-2 border-blue-500'
+                        onClick={()=>showDeleteTaskListModal()}
                     >
                         <p className='text-lg mt-1'>このタスクリストを削除する</p>
                     </DangerButton>
@@ -361,6 +389,31 @@ export default function TaskPageCenter(props) {
                     >
                         ×
                     </p>
+                </Modal>
+
+                <Modal show={deleteTaskListModalFlag} onClose={closeDeleteTaskListModal}>
+                    <div className='mx-20 mt-10'>
+                        <p className='text-2xl'>このタスクリストを削除しますか？</p>
+                        <p className='text-2xl mt-4'>タスクリスト名</p>
+                        <p className='text-3xl mt-2 mb-10'>{props.clickedTaskListTitle}</p>
+                        {viewTasks.length !== 0 ?
+                            (<p className='text-red-500'>
+                                本タスクリストに登録されているタスクも含めて削除されますのでご注意ください
+                            </p>)
+                            :
+                            (null)}
+
+                        <div className="my-10 flex justify-between">
+                            <form onSubmit={submitDeleteTaskList}>
+                                <DangerButton className="w-48" disabled={processing}>
+                                    <span className='text-lg m-auto leading-10'>削除する</span>
+                                </DangerButton>
+                            </form>
+                            <SecondaryButton className="w-48" onClick={closeDeleteTaskListModal}>
+                                <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
+                            </SecondaryButton>
+                        </div>
+                    </div>
                 </Modal>
             </>
         );
