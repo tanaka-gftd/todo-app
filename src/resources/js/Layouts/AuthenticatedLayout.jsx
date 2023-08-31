@@ -36,11 +36,9 @@ export default function Authenticated({ auth, header, children }) {
 
     if(url === '/api/tasklist'){
         useEffect(()=>{
-            if(children[2].props.tasks.length===0){
-                console.log('タスクが登録されていません')
-            } else {
+            if(children[2].props.tasks.length!==0){
                 setTaskFromChildren(children[2].props.tasks);
-            }
+            };
         },[children[2].props.tasks]);
     };
 
