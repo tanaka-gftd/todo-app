@@ -258,7 +258,6 @@ export default function TaskPageCenter(props) {
                                 <li 
                                     key={index} 
                                     className='border-b-2 border-neutral-400 mt-4'
-                                    onClick={()=>{props.setClickedTaskId(value.task_id)}} 
                                 >
                                     <div className="flex items-center">
                                         <p>
@@ -267,6 +266,7 @@ export default function TaskPageCenter(props) {
                                         <p 
                                             className="text-3xl cursor-pointer ml-2"
                                             style={{fontWeight: props.clickedTaskId === value.task_id ? 'bold' : 'normal'}}
+                                            onClick={()=>{props.setClickedTaskId(value.task_id)}}
                                         >
                                             {value.task_name}
                                         </p>
