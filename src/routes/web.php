@@ -61,6 +61,9 @@ Route::middleware('auth')->group(function () {
 
     //タグの登録
     Route::post('/api/tag/create', [TagController::class, 'register'])->name('tag.register');
+
+    //タグの削除
+    Route::post('/api/tag/delete', [TagController::class, 'delete'])->name('tag.delete');
 });
 
 require __DIR__.'/auth.php';

@@ -5,6 +5,7 @@ import TextInput from '@/Components/TextInput';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
+import DangerButton from '@/Components/DangerButton';
 
 
 export default function TaskPageLeftSide(props) {
@@ -16,9 +17,11 @@ export default function TaskPageLeftSide(props) {
     const [showTagModalFlag, setShowTagModalFlag] = useState(false);
 
     //タスクリストとタグの新規作成フォーム用
-    const { setData, post, processing, reset } = useForm({
+    const { setData, post, processing, reset, data } = useForm({
         newTaskListTitle:'',
-        newTag:''
+        newTag:'',
+        deleteTagId:'',
+        deleteTagName:''
     });
 
     //タスクリスト名設定用モーダルを表示する
@@ -73,6 +76,51 @@ export default function TaskPageLeftSide(props) {
             } 
         });
     };
+
+    //タグ作成用モーダルの表示フラグ
+    const [showDeleteTagModalFlag, setShowDeleteTagModalFlag] = useState(false);
+
+    //タグ削除用モーダルを表示する
+    const openDeleteTagModal = (id, name)=> {
+        /* 
+            Inertia + Reactで複数のsetDataを連続で行う場合は、
+                setData((data) => ({...data, プロパティA:値}));
+                setData((data) => ({...data, プロパティB:値}));
+                setData((data) => ({...data, プロパティC:値}));
+                :
+                :
+            と記述する。
+
+            もし、
+                setData('プロパティ名A', 値);
+                setData('プロパティ名B', 値);
+                setData('プロパティ名C', 値);
+            のような記述をしてしまうと、最後の行のsetDataで指定したプロパティしか更新されないので注意。
+        */
+        setData((data) => ({...data, deleteTagId: id}));
+        setData((data) => ({...data, deleteTagName: name}));
+        setShowDeleteTagModalFlag(true);
+    };
+
+    //タグ削除用モーダルを閉じる
+    const closeDeleteTagModal = () => {
+        reset('deleteTagId', 'deleteTagName');
+        setShowDeleteTagModalFlag(false);
+    };
+
+    //バックエンドに削除するタグを送信
+    const submitDeleteTag = (e) => {
+        e.preventDefault();
+        post(route('tag.delete'), {
+            onStart: () =>props.setIsLoading(true),  //ローディング画面に切り替え
+            onError: (errors) => {console.error(errors)},
+            onFinish: () => {
+                closeDeleteTagModal();
+                props.setIsLoading(false);  //ダッシュボード画面に切り替え
+            } 
+        });
+    };
+
 
     return (
         <div className='text-2xl'>
@@ -141,7 +189,8 @@ export default function TaskPageLeftSide(props) {
                     return (
                         <li 
                             key={index} 
-                            className='my-8 flex items-center'
+                            className='my-8 flex items-center cursor-pointer'
+                            onClick={()=>openDeleteTagModal(value.id, value.tag)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" height="0.75em" viewBox="0 0 448 512"><path d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
                             </svg>
@@ -221,6 +270,29 @@ export default function TaskPageLeftSide(props) {
                             </PrimaryButton>
                         </div>
                     </form>
+                </div>
+            </Modal>
+
+            <Modal show={showDeleteTagModalFlag} onClose={closeDeleteTagModal}>
+                <div className='mx-20 mt-10'>
+                    <p className='text-2xl'>このタグを削除しますか？</p>
+                    <div className='flex mt-4 text-2xl items-center'>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="0.7em" viewBox="0 0 448 512"><path d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                        </p>
+                        <p className='ml-2'>{data.deleteTagName}</p>
+                    </div>
+
+                    <div className="my-10 flex justify-between">
+                        <form onSubmit={submitDeleteTag}>
+                            <DangerButton className="w-48" disabled={processing}>
+                                <span className='text-lg m-auto leading-10'>削除する</span>
+                            </DangerButton>
+                        </form>
+                        <SecondaryButton className="w-48" onClick={closeDeleteTagModal}>
+                            <span className='text-lg m-auto leading-10 text-blue-700'>キャンセル</span>
+                        </SecondaryButton>
+                    </div>
                 </div>
             </Modal>
         </div>

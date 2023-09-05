@@ -128,11 +128,10 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
                                     <p className="text-3xl mt-2">{value.comment}</p>
                                     <p className="text-2xl mt-12">タグ</p>
                                     <div className='mt-1'>
-                                        {value.tag_1? 
-                                            <TagIcon>{value.tag_1}</TagIcon>
-                                            :
-                                            <p className='text-2xl'>設定無し</p>
-                                        }
+                                        {!value.tag_1 && !value.tag_2 ? <p className='text-2xl'>設定無し</p> : null}
+                                    </div>
+                                    <div className='mt-1'>
+                                        {value.tag_1? <TagIcon>{value.tag_1}</TagIcon> : null}
                                     </div>
                                     <div className='mt-1'>
                                         {value.tag_2? <TagIcon>{value.tag_2}</TagIcon> : null}
