@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        //ダウン時は、tasksテーブルに論理削除機能を削除
+        //ダウン時は、tasksテーブルから論理削除機能を削除
         Schema::table('tasks', function (Blueprint $table) {
             //Laravel5.8以降の書き方
             $table->dropSoftDeletes();

@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        //task_listsテーブルに論理削除機能を追加
         Schema::table('task_lists', function (Blueprint $table) {
             $table->softDeletes();
         });
@@ -25,6 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
+        //ダウン時は、task_listsテーブルから論理削除機能を削除
         Schema::table('task_lists', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });

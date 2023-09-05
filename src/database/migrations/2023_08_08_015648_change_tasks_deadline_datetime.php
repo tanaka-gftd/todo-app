@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        //tasksテーブルに論理削除機能を追加
+        //tasksテーブルのdeadlineカラムの日付形式を変更
         Schema::table('tasks', function (Blueprint $table) {
             $table->dateTime('deadline')->change();
         });
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        //ダウン時は、tasksテーブルに論理削除機能を削除
+        //up時に変更した設定を戻す
         Schema::table('tasks', function (Blueprint $table) {
             $table->date('deadline')->change();
         });
