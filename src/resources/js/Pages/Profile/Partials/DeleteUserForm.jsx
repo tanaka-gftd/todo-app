@@ -69,7 +69,6 @@ export default function DeleteUserForm({ className }) {
                                 onChange={(e) => setData('password', e.target.value)}
                                 className="mt-1 block w-full"
                                 isFocused
-                                placeholder="パスワード"
                             />
 
                             <InputError message={errors.password} className="mt-2" />

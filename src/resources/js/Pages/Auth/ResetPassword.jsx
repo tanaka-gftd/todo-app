@@ -56,7 +56,6 @@ export default function ResetPassword({ token, email }) {
                             value={data.email}
                             className="block w-96 text-xl"
                             autoComplete="username"
-                            placeholder="テキストを追加"
                             disabled
                         />
                     </div>
@@ -72,7 +71,6 @@ export default function ResetPassword({ token, email }) {
                             className="block w-96 text-xl"
                             autoComplete="current-password"
                             onChange={onHandleChange}
-                            placeholder="テキストを追加"
                         />
                     </div>
                     <InputError message={errors.email} className="mt-2" />

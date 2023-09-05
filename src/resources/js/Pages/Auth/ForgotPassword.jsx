@@ -42,7 +42,6 @@ export default function ForgotPassword({ status }) {
                             className="block w-96 text-xl"
                             isFocused={true}
                             onChange={onHandleChange}
-                            placeholder="テキストを追加"
                         />
                     </div>
                     <InputError message={errors.email} className="mt-2" />

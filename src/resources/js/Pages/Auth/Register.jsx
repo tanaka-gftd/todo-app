@@ -51,7 +51,6 @@ export default function Register() {
                             isFocused={true}
                             onChange={handleOnChange}
                             required
-                            placeholder="Add text"
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
@@ -67,7 +66,6 @@ export default function Register() {
                             autoComplete="username"
                             onChange={handleOnChange}
                             required
-                            placeholder="Add text"
                         />
                         <InputError message={errors.email} className="mt-2" />
                     </div>
@@ -83,7 +81,6 @@ export default function Register() {
                             autoComplete="new-password"
                             onChange={handleOnChange}
                             required
-                            placeholder="Add text"
                         />
                         <InputError message={errors.password} className="mt-2" />
                     </div>
@@ -99,7 +96,6 @@ export default function Register() {
                             autoComplete="new-password"
                             onChange={handleOnChange}
                             required
-                            placeholder="Add text"
                         />
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>

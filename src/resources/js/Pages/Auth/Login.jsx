@@ -54,7 +54,6 @@ export default function Login({ status, canResetPassword }) {
                             autoComplete="username"
                             isFocused={true}
                             onChange={handleOnChange}
-                            placeholder="テキストを追加"
                         />
                     </div>
                     <InputError message={errors.email} className="mt-2" />
@@ -69,7 +68,6 @@ export default function Login({ status, canResetPassword }) {
                             className="block w-96 text-xl"
                             autoComplete="current-password"
                             onChange={handleOnChange}
-                            placeholder="テキストを追加"
                         />
                     </div>
                     <InputError message={errors.password} className="mt-2" />
