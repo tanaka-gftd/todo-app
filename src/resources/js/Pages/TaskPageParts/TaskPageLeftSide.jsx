@@ -127,22 +127,34 @@ export default function TaskPageLeftSide(props) {
             <div className='mb-8'>
                 <p 
                     className='py-4 cursor-pointer' 
-                    onClick={()=>props.setShowTask(0)}
-                    style={{fontWeight: props.showTask === 0 ? 'bold' : 'normal'}}
+                    onClick={()=>{
+                        props.setShowTask(1);
+                        props.setClickedTaskListId(null);
+                        props.setClickedTaskListTitle(null);
+                    }}
+                    style={{fontWeight: props.showTask === 1 ? 'bold' : 'normal'}}
                 >
                     すべてのタスク
                 </p>
                 <p 
                     className='py-4 cursor-pointer' 
-                    onClick={()=>props.setShowTask(1)}
-                    style={{fontWeight: props.showTask === 1 ? 'bold' : 'normal'}}
+                    onClick={()=>{
+                        props.setShowTask(2);
+                        props.setClickedTaskListId(null);
+                        props.setClickedTaskListTitle(null);
+                    }}
+                    style={{fontWeight: props.showTask === 2 ? 'bold' : 'normal'}}
                 >
                     今日が期限のタスク
                 </p>
                 <p 
                     className='py-4 cursor-pointer' 
-                    onClick={()=>props.setShowTask(2)}
-                    style={{fontWeight: props.showTask === 2 ? 'bold' : 'normal'}}
+                    onClick={()=>{
+                        props.setShowTask(3);
+                        props.setClickedTaskListId(null);
+                        props.setClickedTaskListTitle(null);
+                    }}
+                    style={{fontWeight: props.showTask === 3 ? 'bold' : 'normal'}}
                 >
                     1週間以内に期限がくるタスク
                 </p>
@@ -154,8 +166,9 @@ export default function TaskPageLeftSide(props) {
                         <li 
                             onClick={()=>{
                                 props.setClickedTaskId(''); //タスクリストを変更したら、リセット
-                                props.setClickedTaskListId(value.id)
-                                props.setClickedTaskListTitle(value.task_list_title)
+                                props.setClickedTaskListId(value.id);
+                                props.setClickedTaskListTitle(value.task_list_title);
+                                props.setShowTask(null);
                             }} 
                             key={index} 
                             style={{fontWeight: props.clickedTaskListId === value.id ? 'bold' : 'normal'}}

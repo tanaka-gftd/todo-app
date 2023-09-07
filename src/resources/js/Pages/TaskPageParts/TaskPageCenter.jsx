@@ -81,8 +81,7 @@ export default function TaskPageCenter(props) {
     //タスクリストをクリックした後に表示
     const ClickedTaskList = () => {
 
-        //タスク詳細設定フォーム用
-        //削除するタスクリストのIDも保持する
+        //タスク詳細設定フォーム用や、個々のタスクリストに含まれるタスクの表示、タスクリストの削除などを扱う
         const { data, setData, post, processing, reset } = useForm({
             taskListId: props.clickedTaskListId,  //選択されたタスクリストのID
             taskName: '',
@@ -91,7 +90,8 @@ export default function TaskPageCenter(props) {
             comment: '',
             isDone: false, //初期値は未達成を示すfalse
             tagsArray: [],
-            deleteTaskListId: props.clickedTaskListId,  //タスクリストを削除する時に使用
+            deleteTaskListId: props.clickedTaskListId, //タスクリストを削除する時に使用
+            TaskInTaskList:[] //個々のタスクリストに含まれるタスクを表示する時に使用
         });
 
         //タスクに設定できるタグの上限数
@@ -149,58 +149,6 @@ export default function TaskPageCenter(props) {
             });
         };
 
-        //現在の日付を取得
-        const date = new Date();
-        const todayStr = date.toLocaleDateString();
-        const todayTime = date.getTime();
-
-        //1週間後の日付を取得
-        const date_2 = new Date();
-        date_2.setDate(date_2.getDate() + 7);
-        const oneWeekLaterTime = date_2.getTime();
-        
-        //期限が今日までのタスク、1週間以内のタスクを、それぞれ配列に記録
-        props.tasks.forEach((value) => {
-            const deadline = new Date(value.deadline);
-            const deadlineStr = deadline.toLocaleDateString();
-            const deadlineTime = deadline.getTime();
-            
-            //期限が今日まで
-            if(deadlineStr === todayStr){
-                props.todayTask.push(value);
-            };
-
-            //期限が今日を含めて1週間以内
-            //期限が今日のものについては、期限がすでに過ぎているタスクも含める
-            if(((todayTime <= deadlineTime)&&(deadlineTime <= oneWeekLaterTime))||(deadlineStr === todayStr)){
-                props.weekTask.push(value);
-            };
-        });
-
-        //画面に表示するタスクを保存する配列を、stateとして準備
-        const [viewTasks, setViewTasks] = useState([]);
-
-        //親コンポーネントから受け取ったprops.showTaskの値に応じて、表示する配列の中身を切り替える
-        //初回レンダリング時と、props.showTaskの値が更新された時に呼び出される
-        useEffect(() => {
-            switch(props.showTask){
-                case 0:
-                    //すべてのタスク
-                    setViewTasks([...props.tasks]);  
-                break;
-                case 1:
-                    //期限が今日までのタスク
-                    setViewTasks([...props.todayTask]);  
-                break;
-                case 2:
-                    //期限が、今日を含めて1週間以内のタスク
-                    setViewTasks([... props.weekTask]);  
-                break;
-                default:
-                break;
-            };
-        },[props.showTask]);
-
         //タスクリスト削除用モーダルの表示フラグ
         const [deleteTaskListModalFlag, setDeleteTaskListModalFlag] = useState(false);
 
@@ -225,6 +173,15 @@ export default function TaskPageCenter(props) {
             });
             props.setClickedTaskListId(null);
         };
+
+        useEffect(() => {
+            reset('TaskInTaskList')
+            props.tasks.map((value)=>{
+                if(value.task_list_id === props.clickedTaskListId){
+                    setData((data) => ({...data, TaskInTaskList:[...data.TaskInTaskList, value]}));
+                };
+            });
+        },[props.clickedTaskListId]);
 
 
         return (
@@ -251,7 +208,7 @@ export default function TaskPageCenter(props) {
                 <p className='text-2xl mt-10 border-b-2 border-neutral-400'>タスク一覧</p>
 
                 <ul className='mt-2'>
-                    {viewTasks.map((value, index) => {
+                    {props.tasks.map((value, index) => {
                         //表示するタスクは、左エリアでクリックされたタスクリストのIDと一致しているものだけとする
                         if(value.task_list_id === props.clickedTaskListId){
                             return (
@@ -399,7 +356,7 @@ export default function TaskPageCenter(props) {
                         <p className='text-2xl'>このタスクリストを削除しますか？</p>
                         <p className='text-2xl mt-4'>タスクリスト名</p>
                         <p className='text-3xl mt-2 mb-10'>{props.clickedTaskListTitle}</p>
-                        {viewTasks.length !== 0 ?
+                        {data.TaskInTaskList.length !== 0 ?
                             (<p className='text-red-500'>
                                 本タスクリストに登録されているタスクも含めて削除されますのでご注意ください
                             </p>)
@@ -423,6 +380,107 @@ export default function TaskPageCenter(props) {
     };
 
 
+    //期限日によってフィルタリングされたタスクを表示
+    const DeadlineFilteredTask = () => {
+
+        //現在の日付を取得
+        const date = new Date();
+        const todayStr = date.toLocaleDateString();
+        const todayTime = date.getTime();
+
+        //1週間後の日付を取得
+        const date_2 = new Date();
+        date_2.setDate(date_2.getDate() + 7);
+        const oneWeekLaterTime = date_2.getTime();
+        
+        //期限が今日までのタスク、1週間以内のタスクを、それぞれ配列に記録
+        props.tasks.forEach((value) => {
+            const deadline = new Date(value.deadline);
+            const deadlineStr = deadline.toLocaleDateString();
+            const deadlineTime = deadline.getTime();
+            
+            //期限が今日まで
+            if(deadlineStr === todayStr){
+                props.todayTask.push(value);
+            };
+
+            //期限が今日を含めて1週間以内
+            //期限が今日のものについては、期限がすでに過ぎているタスクも含める
+            if(((todayTime <= deadlineTime)&&(deadlineTime <= oneWeekLaterTime))||(deadlineStr === todayStr)){
+                props.weekTask.push(value);
+            };
+        });
+
+        //画面に表示するタスクを保存する配列を、stateとして準備
+        const [filteredTasks, setFilteredTasks] = useState([]);
+
+        //親コンポーネントから受け取ったprops.showTaskの値に応じて、表示する配列の中身を切り替える
+        //初回レンダリング時と、props.showTaskの値が更新された時に呼び出される
+        useEffect(() => {
+            switch(props.showTask){
+                case 1:
+                    //すべてのタスク
+                    setFilteredTasks([...props.tasks]);  
+                break;
+                case 2:
+                    //期限が今日までのタスク
+                    setFilteredTasks([...props.todayTask]);  
+                break;
+                case 3:
+                    //期限が、今日を含めて1週間以内のタスク
+                    setFilteredTasks([... props.weekTask]);  
+                break;
+                default:
+                break;
+            };
+        },[props.showTask]);
+
+        return (
+            <>
+                <div className='text-4xl mt-4'>
+                    {props.showTask === 1 ? 
+                        (<p>すべてのタスク</p>)
+                        : 
+                        props.showTask === 2 ? (<p>今日が期限のタスク</p>) : (<p>1週間以内に期限がくるタスク</p>)
+                    }
+                </div>
+
+                <p className='text-2xl mt-10 border-b-2 border-neutral-400'>タスク一覧</p>
+
+                <ul className='mt-2'>
+                    {filteredTasks.map((value, index) => {
+                            return (
+                                <li 
+                                    key={index} 
+                                    className='border-b-2 border-neutral-400 mt-4'
+                                >
+                                    <div className="flex items-center">
+                                        <p>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 448 512"><path d="M364.2 83.8c-24.4-24.4-64-24.4-88.4 0l-184 184c-42.1 42.1-42.1 110.3 0 152.4s110.3 42.1 152.4 0l152-152c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-152 152c-64 64-167.6 64-231.6 0s-64-167.6 0-231.6l184-184c46.3-46.3 121.3-46.3 167.6 0s46.3 121.3 0 167.6l-176 176c-28.6 28.6-75 28.6-103.6 0s-28.6-75 0-103.6l144-144c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-144 144c-6.7 6.7-6.7 17.7 0 24.4s17.7 6.7 24.4 0l176-176c24.4-24.4 24.4-64 0-88.4z"/></svg>
+                                        </p>
+                                        <p 
+                                            className="text-3xl cursor-pointer ml-2"
+                                            style={{fontWeight: props.clickedTaskId === value.task_id ? 'bold' : 'normal'}}
+                                            onClick={()=>{props.setClickedTaskId(value.task_id)}}
+                                        >
+                                            {value.task_name}
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="flex my-2 text-2xl">
+                                        <p className="mr-4">期限</p>
+                                        <p className='mr-12'>{value.deadline}</p>
+                                        <PriorityColor num={value.priority}/>
+                                    </div>
+                                </li>
+                            );
+                    })}
+                </ul>
+            </>
+        )
+    }
+
+
     //タスクリスト未作成 or タスクリスト未選択の時に表示
     //タスクリスト未作成か、タスクリスト未選択の判定には、props.taskLists(配列)のlengthで判定
     const UnsetTaskList = () => {
@@ -430,20 +488,36 @@ export default function TaskPageCenter(props) {
             <>
                 {props.taskLists.length === 0 ?
                     (<p className='text-xl py-4'>タスクリストを作成してください</p>)
-                    :(<p className='text-xl py-4'>タスクリストを選択してください</p>)
+                    :
+                    (<p className='text-xl py-4'>タスクリストを選択してください</p>)
                 }
             </>
         );
     };
 
 
-    //検索済みタスクがあるかどうか、ページ左側のタスクリストをクリックしたかどうかで、表示を切り替える
+    /* 
+        検索済みタスクがあるかどうか、タスクリストをクリックしたかどうか、期限によるフィルタリングをしたかどうか、の順で判定
+
+        表示の優先順は上から順に
+            検索済みタスクの表示
+            ↓
+            タスクリストに含まれるタスクの表示
+            ↓
+            期限によるフィルタリングされたタスクの表示
+            ↓
+            いずれにも該当しない場合の表示
+        とする。
+    */
     return (
         <>
             {searchedTask.length !== 0 ? 
                 (<ShowSearchedTask/>) 
                 : 
-                props.clickedTaskListId ? (<ClickedTaskList/>) : (<UnsetTaskList/>)
+                props.clickedTaskListId ? 
+                    (<ClickedTaskList/>) 
+                    : 
+                    props.showTask ? (<DeadlineFilteredTask/>) : (<UnsetTaskList/>)
             }
         </>
     );
