@@ -32,6 +32,7 @@ export default function TaskPageCenter(props) {
     };
 
 
+    //検索結果を表示する
     const ShowSearchedTask = () => {
         return(
             <>
@@ -174,6 +175,8 @@ export default function TaskPageCenter(props) {
             props.setClickedTaskListId(null);
         };
 
+        //表示するタスクを、dataに保存
+        //初回レンダリング時と、別のタスクリストがクリックされた時に実行される
         useEffect(() => {
             reset('TaskInTaskList')
             props.tasks.map((value)=>{

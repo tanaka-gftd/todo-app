@@ -10,7 +10,7 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
         taskId: clickedTaskId,  //選択されたタスクのID
     });
 
-    //タスクを完了
+    //タスクを完了するよう、バックエンドに通達
     const submitDone = (e) => {
         e.preventDefault();
         //taskのIDをURLパラメータとして送信
@@ -21,7 +21,7 @@ export default function TaskPageRightSide({tasks, clickedTaskId, setIsLoading}) 
         });
     };
 
-    //タスクを削除
+    //タスクを削除するよう、バックエンドに通達
     const submitDelete = (e) => {
         e.preventDefault();
         //taskのIDをURLパラメータとして送信

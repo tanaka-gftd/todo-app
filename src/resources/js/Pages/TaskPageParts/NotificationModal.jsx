@@ -15,14 +15,14 @@ export default function NotificationModal(props) {
         const deadline = new Date(value.deadline);  //期限日時のDateオブジェクト
         const now = new Date();  //現在のDateオブジェクト
         const diff = deadline.getTime() - now.getTime();  //現在から期限までのミリ秒を求める
-        const millisecondDay = 1000*60*60*24;  //1日をミリ秒で換算
+        const millisecondDay = 1000 * 60 * 60 * 24;  //1日をミリ秒で換算
         
         if(!value.is_done){  //未完了のタスクのみチェック
             switch (true) {
                 case diff < 0:  //期限過ぎ
                     over.push(value);
                 break;
-                case diff <= millisecondDay*1/2:  //期限まで残り12時間以下
+                case diff <= millisecondDay * 1/2:  //期限まで残り12時間以下
                     justBefore.push(value)
                 break;
                 case diff <= millisecondDay:  //期限まで残り24時間以下

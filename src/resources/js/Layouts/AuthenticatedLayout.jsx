@@ -13,7 +13,7 @@ export default function Authenticated({ auth, header, children }) {
     const dropDawnTextStyle = 'underline underline-offset-8 decoration-blue-400 text-xl text-blue-700 hover:text-gray-700 hover:decoration-gray-400'
 
     //タスク検索フォーム用
-    const { data, setData, post, processing, reset } = useForm({
+    const { data, setData } = useForm({
         taskSearch:'',
     });
 
